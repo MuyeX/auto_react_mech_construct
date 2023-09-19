@@ -42,14 +42,14 @@ initial_conditions = {
     "ic_1": np.array([4, 0, 0, 0, 0, 0, 0, 0, 0])
     }
 
-rate_constants = np.array([3.50981472, 1.57307663, 2.54620736, 1.12157299, 
-                           8.58300086, 3.68118241, 8.94969953])
+rate_constants = np.array([1.51351854, 8.25876281, 8.35924053, 9.35150102, 
+                           7.00087255, 7.6206748 , 6.49263229])
     
 num_exp = len(initial_conditions)
 num_species = len(species)
 
 timesteps = 30
-time = np.linspace(0, 5, timesteps)
+time = np.linspace(0, 2, timesteps)
 t = [0, np.max(time)]
 t_eval = list(time)
 STD = 0.0
@@ -77,7 +77,7 @@ for i in range(num_exp):
     ax.spines["top"].set_visible(False)
     ax.tick_params(axis = 'both', which = 'major', labelsize = 18)
     
-    for j in range(num_species):
+    for j in np.array([0, 1, -1]):
         y = in_silico_data["exp_" + str(i + 1)][j]
         ax.plot(time, y, marker[j], markersize = 4, label = species[j], color = color_1[j])
     
