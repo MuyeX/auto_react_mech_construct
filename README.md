@@ -2,51 +2,51 @@
 
 The mechanism generator file simply grabs a string of reactions, for example: 
 
-r1 = 'A -> B + C'
-
-r2 = 'C -> D'
-
-r3 = 'D -> E'
-
-r4 = 'E -> B + F'
-
-r5 = 'F -> G'
-
-r6 = 'G -> B + H'
-
-r7 = 'H -> I'
-
-reactions = [r1, r2, r3, r4, r5, r6, r7]
-
-mechanism = make_system(reactions)
+    r1 = 'A -> B + C'
+    
+    r2 = 'C -> D'
+    
+    r3 = 'D -> E'
+    
+    r4 = 'E -> B + F'
+    
+    r5 = 'F -> G'
+    
+    r6 = 'G -> B + H'
+    
+    r7 = 'H -> I'
+    
+    reactions = [r1, r2, r3, r4, r5, r6, r7]
+    
+    mechanism = make_system(reactions)
 
 And then turns them into an ODE system:
 
-print(mechanism)
+    print(mechanism)
 
-def kinetic_model(x, init, k1, k2, k3, k4, k5, k6, k7):
+    def kinetic_model(x, init, k1, k2, k3, k4, k5, k6, k7):
 
-    CA,CB,CC,CD,CE,CF,CG,CH,CI = init
-    
-    dAdt = - k1*CA
-    
-    dBdt = k1*CA + k4*CE + k6*CG
-    
-    dCdt = k1*CA - k2*CC
-    
-    dDdt = k2*CC - k3*CD
-    
-    dEdt = k3*CD - k4*CE
-    
-    dFdt = k4*CE - k5*CF
-    
-    dGdt = k5*CF - k6*CG
-    
-    dHdt = k6*CG - k7*CH
-    
-    dIdt = k7*CH
-    
-    return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt,dGdt,dHdt,dIdt
+        CA,CB,CC,CD,CE,CF,CG,CH,CI = init
+        
+        dAdt = - k1*CA
+        
+        dBdt = k1*CA + k4*CE + k6*CG
+        
+        dCdt = k1*CA - k2*CC
+        
+        dDdt = k2*CC - k3*CD
+        
+        dEdt = k3*CD - k4*CE
+        
+        dFdt = k4*CE - k5*CF
+        
+        dGdt = k5*CF - k6*CG
+        
+        dHdt = k6*CG - k7*CH
+        
+        dIdt = k7*CH
+        
+        return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt,dGdt,dHdt,dIdt
 
 This is useful because one can easily get the ODE from a mechanism defined reaction mechanism. From here we would need to figure out: how instead of getting the string from the 'print' statement, simply be able to use it (I am not sure if this is possible or not, and if it is possible, if it is difficult to do); and how to iteratively propose the strings that will make up the reaction system.
 
