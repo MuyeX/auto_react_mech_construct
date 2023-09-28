@@ -42,8 +42,7 @@ initial_conditions = {
     "ic_1": np.array([4, 0, 0, 0, 0, 0, 0, 0, 0])
     }
 
-rate_constants = np.array([1.51351854, 8.25876281, 8.35924053, 9.35150102, 
-                           7.00087255, 7.6206748 , 6.49263229])
+rate_constants = np.array([1.514, 8.259, 8.359, 9.352, 7.001, 7.621 , 6.493])
     
 num_exp = len(initial_conditions)
 num_species = len(species)
