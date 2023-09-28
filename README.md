@@ -1,4 +1,4 @@
-# mechanism_constructor.py
+# ODE_generator.py
 
 The mechanism generator file simply grabs a string of reactions, for example: 
 
