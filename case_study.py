@@ -9,8 +9,9 @@ Created on Mon Sep 18 13:22:34 2023
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
-from mechanism_generator import make_system
+from ODE_generator import make_system
 import matplotlib.cm as cm
+import pandas as pd
 
 # r1 = 'A -> B + C'
 # r2 = 'C -> D'
@@ -55,6 +56,7 @@ STD = 0.0
 noise = [np.random.normal(0, STD, size = (num_species, timesteps)) for i in range(num_exp)]
 in_silico_data = {}
 no_noise_data = {}
+obs_data = {}
 
 for i in range(num_exp):
     ic = initial_conditions["ic_" + str(i + 1)]
@@ -62,6 +64,18 @@ for i in range(num_exp):
                           args = rate_constants)
     in_silico_data["exp_" + str(i + 1)] = np.clip(solution.y + noise[i], 0, 1e99)
     no_noise_data["exp_" + str(i + 1)] = solution.y
+    obs_data["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[0, 1, -1]]
+
+def dict_to_excel(input_dict, filename="kinetic_data.xlsx"):
+    with pd.ExcelWriter(filename) as writer:
+        for key, value in input_dict.items():
+            if isinstance(value, np.ndarray):
+                value = value.T
+                value = pd.DataFrame(value)
+                
+            value.to_excel(writer, sheet_name = key, index = False)
+
+dict_to_excel(obs_data)
 
 color_1 = cm.plasma(np.linspace(0, 1, 9))
 marker = ['o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o']
