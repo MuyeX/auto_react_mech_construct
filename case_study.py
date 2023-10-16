@@ -13,20 +13,19 @@ from ODE_generator import make_system
 import matplotlib.cm as cm
 import pandas as pd
 
-# r1 = 'A -> B + C'
-# r2 = 'C -> D'
-# r3 = 'D -> E'
-# r4 = 'E -> B + F'
-# r5 = 'F -> G'
-# r6 = 'G -> B + H'
-# r7 = 'H -> I'
-# reactions = [r1, r2, r3, r4, r5, r6, r7]
-# mechanism = make_system(reactions)
-# print(mechanism)
+r1 = 'A -> B + C'
+r2 = 'C -> D'
+r3 = 'D -> E'
+r4 = 'E -> B + F'
+r5 = 'F -> G'
+r6 = 'G -> B + H'
+r7 = 'H -> I'
+reactions = [r1, r2, r3, r4, r5, r6, r7]
+mechanism = make_system(reactions)
+print(mechanism)
 
 def kinetic_model(x, init, k1, k2, k3, k4, k5, k6, k7):
-    CA,CB,CC,CD,CE,CF,CG,CH,CI = init
-    dAdt = - k1*CA
+    CA,CB,CC,CD,CE,CF,CG,CH,CI = init    dAdt = - k1*CA
     dBdt = k1*CA + k4*CE + k6*CG
     dCdt = k1*CA - k2*CC
     dDdt = k2*CC - k3*CD
@@ -35,6 +34,7 @@ def kinetic_model(x, init, k1, k2, k3, k4, k5, k6, k7):
     dGdt = k5*CF - k6*CG
     dHdt = k6*CG - k7*CH
     dIdt = k7*CH
+
     return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt,dGdt,dHdt,dIdt
 
 # Plotting the data given
@@ -66,16 +66,19 @@ for i in range(num_exp):
     no_noise_data["exp_" + str(i + 1)] = solution.y
     obs_data["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[0, 1, -1]]
 
-def dict_to_excel(input_dict, filename="kinetic_data.xlsx"):
-    with pd.ExcelWriter(filename) as writer:
-        for key, value in input_dict.items():
-            if isinstance(value, np.ndarray):
-                value = value.T
-                value = pd.DataFrame(value)
-                
-            value.to_excel(writer, sheet_name = key, index = False)
 
-dict_to_excel(obs_data)
+def dict_to_csv(input_dict, filename):
+    # For CSV, each key will be saved as a separate file, hence adding the key to the filename.
+    for key, value in input_dict.items():
+        if isinstance(value, np.ndarray):
+            value = value.T
+            value = pd.DataFrame(value)
+        
+        csv_filename = filename 
+        value.to_csv(csv_filename, index=False)
+
+
+dict_to_csv(obs_data, 'exp_data/exp_1.csv')
 
 color_1 = cm.plasma(np.linspace(0, 1, 9))
 marker = ['o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o']
