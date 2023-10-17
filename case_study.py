@@ -25,7 +25,8 @@ mechanism = make_system(reactions)
 print(mechanism)
 
 def kinetic_model(x, init, k1, k2, k3, k4, k5, k6, k7):
-    CA,CB,CC,CD,CE,CF,CG,CH,CI = init    dAdt = - k1*CA
+    CA,CB,CC,CD,CE,CF,CG,CH,CI = init    
+    dAdt = - k1*CA
     dBdt = k1*CA + k4*CE + k6*CG
     dCdt = k1*CA - k2*CC
     dDdt = k2*CC - k3*CD
@@ -52,7 +53,7 @@ timesteps = 30
 time = np.linspace(0, 2, timesteps)
 t = [0, np.max(time)]
 t_eval = list(time)
-STD = 0.0
+STD = 0.2
 noise = [np.random.normal(0, STD, size = (num_species, timesteps)) for i in range(num_exp)]
 in_silico_data = {}
 no_noise_data = {}
