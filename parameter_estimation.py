@@ -182,7 +182,8 @@ model_pred = np.vstack(list(model_predictions.values()))
 
 nll = NLL_mechanism(exp_data, model_pred)
 AIC = Akaike(nll, opt_param)
-print(AIC)
+print('NLL value: ', nll)
+print('AIC value: ', AIC)
 
 
 species = list(sorted(unique_letters))
