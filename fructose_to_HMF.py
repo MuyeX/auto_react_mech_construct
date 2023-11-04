@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Sep 18 13:22:34 2023
+Created on Fri Nov  3 20:52:14 2023
 
 @author: md1621
 """
@@ -14,37 +14,30 @@ import matplotlib.cm as cm
 import pandas as pd
 
 r1 = 'A -> B + C'
-r2 = 'C -> D'
+r2 = 'C -> B + D'
 r3 = 'D -> E'
 r4 = 'E -> B + F'
-r5 = 'F -> G'
-r6 = 'G -> B + H'
-r7 = 'H -> I'
-reactions = [r1, r2, r3, r4, r5, r6, r7]
+reactions = [r1, r2, r3, r4]
 mechanism = make_system(reactions)
 print(mechanism)
 
-def kinetic_model(x, init, k1, k2, k3, k4, k5, k6, k7):
-    CA,CB,CC,CD,CE,CF,CG,CH,CI = init    
+def kinetic_model(x, init, k1, k2, k3, k4):
+    CA,CB,CC,CD,CE,CF = init
     dAdt = - k1*CA
-    dBdt = k1*CA + k4*CE + k6*CG
+    dBdt = k1*CA + k2*CC + k4*CE
     dCdt = k1*CA - k2*CC
     dDdt = k2*CC - k3*CD
     dEdt = k3*CD - k4*CE
-    dFdt = k4*CE - k5*CF
-    dGdt = k5*CF - k6*CG
-    dHdt = k6*CG - k7*CH
-    dIdt = k7*CH
-
-    return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt,dGdt,dHdt,dIdt
+    dFdt = k4*CE
+    return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt
 
 # Plotting the data given
-species = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+species = ['A', 'B', 'C', 'D', 'E', 'F']
 initial_conditions = {
-    "ic_1": np.array([4, 0, 0, 0, 0, 0, 0, 0, 0])
+    "ic_1": np.array([4, 0, 0, 0, 0, 0])
     }
 
-rate_constants = np.array([1.514, 8.259, 8.359, 9.352, 7.001, 7.621 , 6.493])
+rate_constants = np.array([1.514, 8.259, 8.359, 9.352])
     
 num_exp = len(initial_conditions)
 num_species = len(species)
@@ -79,10 +72,10 @@ def dict_to_csv(input_dict, filename):
         value.to_csv(csv_filename, index=False)
 
 
-dict_to_csv(obs_data, 'exp_data/exp_1.csv')
+dict_to_csv(obs_data, 'exp_data_fruc_HMF/exp_1.csv')
 
-color_1 = cm.plasma(np.linspace(0, 1, 9))
-marker = ['o', 'o', 'o', 'o', 'o', 'o', 'o', 'o', 'o']
+color_1 = cm.plasma(np.linspace(0, 1, 6))
+marker = ['o', 'o', 'o', 'o', 'o', 'o']
 
 # Plotting the in-silico data for visualisation
 for i in range(num_exp):
@@ -101,7 +94,7 @@ for i in range(num_exp):
     ax.grid(alpha = 0.5)
     ax.legend(loc='upper right', fontsize = 15)
     
-    file_path = 'Experiment_' + str(i + 1) +'.png'
+    file_path = 'Fruc_HMF_Experiment_' + str(i + 1) +'.png'
     plt.savefig(file_path, dpi = 600, bbox_inches = "tight")
 
 plt.show()
