@@ -6,7 +6,7 @@ from parameter_estimation import read_files
 
 def plot(unique_letters, model_predictions):
 
-    in_silico_data = read_files("auto_react_mech_construct/exp_data")
+    in_silico_data = read_files("exp_data_fruc_HMF")
 
     # This takes the first column from each entry of the dictionary and puts it into another dictionary
     initial_conditions = {}
@@ -39,8 +39,15 @@ def plot(unique_letters, model_predictions):
         for j in np.array([0, 1, -1]):
             y = in_silico_data["exp_" + str(i + 1)][:, j]
             yy = model_predictions["exp_" + str(i + 1)][:, j]
-            ax.plot(time, y, marker[j], markersize = 4, label = species[j], color = color_1[j])
-            ax.plot(time, yy, '-', color = color_1[j])
+            
+            if j == -1:
+                ax.plot(time, y, marker[j], markersize = 4, label = 'C', color = color_1[j])
+                ax.plot(time, yy, '-', color = color_1[j])
+                
+            else:
+                ax.plot(time, y, marker[j], markersize = 4, label = species[j], color = color_1[j])
+                ax.plot(time, yy, '-', color = color_1[j])
+                        
         
         ax.grid(alpha = 0.5)
         ax.legend(loc='upper right', fontsize = 15)

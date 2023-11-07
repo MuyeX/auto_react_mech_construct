@@ -30,7 +30,7 @@ def read_files(directory):
                                           encoding = 'latin1').values
     return data
 
-in_silico_data = read_files("auto_react_mech_construct/exp_data")
+in_silico_data = read_files("exp_data_fruc_HMF")
 
 # This takes the first column from each entry of the dictionary and puts it into another dictionary
 initial_conditions = {}

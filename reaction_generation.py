@@ -14,7 +14,7 @@ def get_unique_intermediates(count, products, reactant):
     next_char_num = ord(last_char)+1
 
     # Generate intermediates starting from the next char
-    return [chr(next_char_num + i) for i in range(count)]
+    return [chr(next_char_num + i) for i in range(count - 1)]
 
 def create_reactions(reactant, products, intermediates):
     reactions = []

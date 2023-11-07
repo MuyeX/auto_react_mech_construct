@@ -13,31 +13,34 @@ from ODE_generator import make_system
 import matplotlib.cm as cm
 import pandas as pd
 
-r1 = 'A -> B + C'
-r2 = 'C -> B + D'
-r3 = 'D -> E'
-r4 = 'E -> B + F'
+r1 = 'A -> B + D'
+r2 = 'D -> B + E'
+r3 = 'E -> F'
+r4 = 'F -> B + C'
 reactions = [r1, r2, r3, r4]
 mechanism = make_system(reactions)
 print(mechanism)
 
 def kinetic_model(x, init, k1, k2, k3, k4):
-    CA,CB,CC,CD,CE,CF = init
+    CA,CB,CD,CE,CF,CC = init
     dAdt = - k1*CA
-    dBdt = k1*CA + k2*CC + k4*CE
-    dCdt = k1*CA - k2*CC
-    dDdt = k2*CC - k3*CD
-    dEdt = k3*CD - k4*CE
-    dFdt = k4*CE
-    return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt
+    dBdt = k1*CA + k2*CD + k4*CF
+    dDdt = k1*CA - k2*CD
+    dEdt = k2*CD - k3*CE
+    dFdt = k3*CE - k4*CF
+    dCdt = k4*CF
+    return dAdt,dBdt,dDdt,dEdt,dFdt,dCdt
 
 # Plotting the data given
-species = ['A', 'B', 'C', 'D', 'E', 'F']
+species = ['A', 'B', 'D', 'E', 'F', 'C']
 initial_conditions = {
-    "ic_1": np.array([4, 0, 0, 0, 0, 0])
+    # "ic_1": np.array([4, 0, 0, 0, 0, 0])
+    # "ic_1": np.array([10,          9.61831914, 0, 0, 0,  9.54056527])
+    "ic_1": np.array([10, 0, 0, 0, 0, 0])
     }
 
 rate_constants = np.array([1.514, 8.259, 8.359, 9.352])
+rate_constants = np.array([1.514, 5.259, 2.359, 9.352])
     
 num_exp = len(initial_conditions)
 num_species = len(species)

@@ -19,8 +19,8 @@ def bob_the_mechanism_builder(
     reaction_chains = []
 
     # Initialize flag variables
-    last_AIC = 100
-    AIC = 100
+    last_AIC = 1000
+    AIC = 1000
     opt_solution = {}
 
     # do this loop until current AIC is greater than last iteration's AIC
