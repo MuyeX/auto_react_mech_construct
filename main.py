@@ -2,7 +2,7 @@ from collections import Counter
 from typing import List, Union
 import numpy as np
 np.random.seed(1998)
-from reaction_generation import get_unique_intermediates, create_reactions
+from reaction_generation import get_unique_intermediates, create_reactions, generate_alternative_chains
 from parameter_estimation import evaluate
 from plot_optimal_solution import plot
 
@@ -40,11 +40,30 @@ def bob_the_mechanism_builder(
         intermediates = get_unique_intermediates(most_repeated + iteration_counter, products, reactant)
 
         # Create reactions with the current set of intermediates
-        reaction_chain = create_reactions(reactant, products, intermediates)
+        base_reaction_chain = create_reactions(reactant, products, intermediates)
+       
+        alternative_chains = generate_alternative_chains(base_reaction_chain, reactant=[reactant], products=products)
+        if len(alternative_chains) > 0:
+            AICs = []
+            alternative_chains.append(base_reaction_chain)
+            print("Alternative chains", alternative_chains)
+            for reaction_chain in alternative_chains:
+                print("evaluated reaction chain", reaction_chain)
+                alt_unique_letters, alt_model_predictions, alt_nll, alt_AIC = evaluate(reaction_chain)
+                AICs.append(alt_AIC)
+            
+            min_AIC_idx = AICs.index(min(AICs))  
+            reaction_chain = alternative_chains[min_AIC_idx]
+            unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
+            AIC = min(AICs)
+        else:
+            reaction_chain = create_reactions(reactant, products, intermediates)
+            unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
+        
         reaction_chains.append(reaction_chain)
-        print(reaction_chain)
+        print("Appended", reaction_chain)
 
-        unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
+        # unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
 
         # Increase the iteration counter
         iteration_counter += 1
