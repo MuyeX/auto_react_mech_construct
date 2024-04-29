@@ -25,7 +25,7 @@ np.random.seed(1998)
 
 def kinetic_model(x, init):
     CA,CB,CD,CE,CC = init
-    k1, k2, k3 = np.array([ 1.76137819,  1.93929382, 10.        ])
+    k1, k2, k3 = np.array([1.56944133, 4.24332355, 1.91130801])
     dAdt = - k1*CA
     dBdt = k1*CA + k2*CD + k3*CE
     dDdt = k1*CA - k2*CD
@@ -35,7 +35,7 @@ def kinetic_model(x, init):
 
 def kinetic_model_2(x, init):
     CA,CB,CD,CE,CF,CC = init
-    k1, k2, k3, k4 = np.array([1.514, 8.259, 8.359, 9.352])
+    k1, k2, k3, k4 = np.array([1.514, 5.259, 2.359, 9.352])
     dAdt = - k1*CA
     dBdt = k1*CA + k2*CD + k4*CF
     dDdt = k1*CA - k2*CD

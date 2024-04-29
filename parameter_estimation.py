@@ -14,6 +14,7 @@ import os
 from ODE_generator import make_system
 from metrics import NLL_mechanism, Akaike
 
+
 "##############################################################################"
 "############################ Optimise Rate Model #############################"
 "##############################################################################"
@@ -103,16 +104,10 @@ def evaluate(reaction_chain):
                 unique_letters.add(letter)
 
     num_species = len(unique_letters)
-    multistart = 10
+    multistart = 2
     number_parameters = len(reactions)
     lower_bound = 0.0001
     upper_bound = 10
-
-    # abc_obj = abc(sse, [(lower_bound, upper_bound) for i in range(number_parameters)])
-    # abc_obj.fit() 
-
-    # solution = abc_obj.get_solution()
-    # print('Initial guess = ', solution)
 
     solution = np.array([0.1 for i in range(number_parameters)])
 

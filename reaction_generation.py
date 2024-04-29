@@ -20,7 +20,8 @@ def get_unique_intermediates(count, products, reactant):
 def create_reactions(reactant, products, intermediates):
     reactions = []
     remaining_products = Counter(products)
-    #TODO:currently it is only checking for 'B' but it could be a different char based on the input, fix it
+    #TODO:currently it is only checking for 'B' but it could be a different 
+    #char based on the input, fix it
 
     # Generate the initial reaction with the first intermediate
     if remaining_products['B'] > 0:
@@ -31,7 +32,9 @@ def create_reactions(reactant, products, intermediates):
     for i in range(len(intermediates)):
         # If this is the last intermediate, it should produce the final products
         if i == len(intermediates) - 1:
-            product_str = ' + '.join([product for product in remaining_products.elements()])
+            product_str = ' + '.join(
+                [product for product in remaining_products.elements()]
+                )
             reactions.append(f"{intermediates[i]} -> {product_str}")
         else:
             # If 'B' is still needed and we're not at the last intermediate
@@ -69,7 +72,6 @@ def generate_alternative_chains(base_chain, reactant=['A'], products=['B', 'B', 
 
     if num_free_steps == 0:
         return []
-
     num_all_steps = len(base_chain)
     # print(num_free_steps, num_all_steps)
     alternative_chains = []

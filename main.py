@@ -19,8 +19,8 @@ def bob_the_mechanism_builder(
     reaction_chains = []
 
     # Initialize flag variables
-    last_AIC = 1000
-    AIC = 1000
+    last_AIC = 1e99
+    AIC = 1e99
     opt_solution = {}
 
     # do this loop until current AIC is greater than last iteration's AIC
@@ -48,6 +48,7 @@ def bob_the_mechanism_builder(
             alternative_chains.append(base_reaction_chain)
             print("Alternative chains", alternative_chains)
             for reaction_chain in alternative_chains:
+                print("#"*100)
                 print("evaluated reaction chain", reaction_chain)
                 alt_unique_letters, alt_model_predictions, alt_nll, alt_AIC = evaluate(reaction_chain)
                 AICs.append(alt_AIC)
@@ -86,5 +87,5 @@ if __name__ == "__main__":
     
     # Magic is happening here :)
     print("Mechanism builder is working ...")
-    print("#"*50)
+    print("#"*100)
     bob_the_mechanism_builder(reactant=reactant, products=products)

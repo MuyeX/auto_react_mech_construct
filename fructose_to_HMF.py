@@ -12,6 +12,7 @@ from scipy.integrate import solve_ivp
 from ODE_generator import make_system
 import matplotlib.cm as cm
 import pandas as pd
+np.random.seed(1998)
 
 r1 = 'A -> B + D'
 r2 = 'D -> B + E'
@@ -33,14 +34,21 @@ def kinetic_model(x, init, k1, k2, k3, k4):
 
 # Plotting the data given
 species = ['A', 'B', 'D', 'E', 'F', 'C']
+# initial_conditions = {
+#     "ic_1": np.array([4, 0, 0, 0, 0, 0]),
+#     "ic_2": np.array([10,          9.61831914, 0, 0, 0,  9.54056527]),
+#     "ic_3": np.array([10, 0, 0, 0, 0, 0])
+#     }
+
 initial_conditions = {
-    # "ic_1": np.array([4, 0, 0, 0, 0, 0])
-    # "ic_1": np.array([10,          9.61831914, 0, 0, 0,  9.54056527])
-    "ic_1": np.array([10, 0, 0, 0, 0, 0])
+    "ic_1": np.array([4, 0, 0, 0, 0, 0]),
+    "ic_2": np.array([6, 2, 0, 0, 0, 1]),
+    "ic_3": np.array([4, 2, 0, 0, 0, 0])
     }
 
-rate_constants = np.array([1.514, 8.259, 8.359, 9.352])
-rate_constants = np.array([1.514, 5.259, 2.359, 9.352])
+# rate_constants = np.array([1.514, 8.259, 8.359, 9.352])
+# rate_constants = np.array([1.514, 5.259, 2.359, 9.352])
+rate_constants = np.array([1.514, 5.259, 9.352, 2.359])
     
 num_exp = len(initial_conditions)
 num_species = len(species)
@@ -71,11 +79,11 @@ def dict_to_csv(input_dict, filename):
             value = value.T
             value = pd.DataFrame(value)
         
-        csv_filename = filename 
+        csv_filename = filename + key + '.csv'
         value.to_csv(csv_filename, index=False)
 
 
-dict_to_csv(obs_data, 'exp_data_fruc_HMF/exp_1.csv')
+dict_to_csv(obs_data, 'exp_data_fruc_HMF/')
 
 color_1 = cm.plasma(np.linspace(0, 1, 6))
 marker = ['o', 'o', 'o', 'o', 'o', 'o']

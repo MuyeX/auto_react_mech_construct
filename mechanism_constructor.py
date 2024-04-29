@@ -12,6 +12,7 @@ from scipy.integrate import solve_ivp
 from ODE_generator import make_system
 import matplotlib.cm as cm
 import pandas as pd
+import os 
 
 # Function that reads files from a directory and returns a dictionary
 def read_files(directory):
