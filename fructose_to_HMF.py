@@ -23,14 +23,14 @@ mechanism = make_system(reactions)
 print(mechanism)
 
 def kinetic_model(x, init, k1, k2, k3, k4):
-    CA,CB,CD,CE,CF,CC = init
+    CA,CB,CC,CD,CE,CF = init
     dAdt = - k1*CA
     dBdt = k1*CA + k2*CD + k4*CF
+    dCdt = k4*CF
     dDdt = k1*CA - k2*CD
     dEdt = k2*CD - k3*CE
     dFdt = k3*CE - k4*CF
-    dCdt = k4*CF
-    return dAdt,dBdt,dDdt,dEdt,dFdt,dCdt
+    return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt
 
 # Plotting the data given
 species = ['A', 'B', 'D', 'E', 'F', 'C']
@@ -42,7 +42,7 @@ species = ['A', 'B', 'D', 'E', 'F', 'C']
 
 initial_conditions = {
     "ic_1": np.array([4, 0, 0, 0, 0, 0]),
-    "ic_2": np.array([6, 2, 0, 0, 0, 1]),
+    "ic_2": np.array([6, 2, 1, 0, 0, 0]),
     "ic_3": np.array([4, 2, 0, 0, 0, 0])
     }
 
@@ -69,7 +69,7 @@ for i in range(num_exp):
                           args = rate_constants)
     in_silico_data["exp_" + str(i + 1)] = np.clip(solution.y + noise[i], 0, 1e99)
     no_noise_data["exp_" + str(i + 1)] = solution.y
-    obs_data["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[0, 1, -1]]
+    ["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[0, 1, 2]]
 
 
 def dict_to_csv(input_dict, filename):
@@ -85,7 +85,7 @@ def dict_to_csv(input_dict, filename):
 
 dict_to_csv(obs_data, 'exp_data_fruc_HMF/')
 
-color_1 = cm.plasma(np.linspace(0, 1, 6))
+color_1 = cm.plasma(np.linspace(0, 1, 3))
 marker = ['o', 'o', 'o', 'o', 'o', 'o']
 
 # Plotting the in-silico data for visualisation
@@ -98,7 +98,7 @@ for i in range(num_exp):
     ax.spines["top"].set_visible(False)
     ax.tick_params(axis = 'both', which = 'major', labelsize = 18)
     
-    for j in np.array([0, 1, -1]):
+    for j in np.array([0, 1, 2]):
         y = in_silico_data["exp_" + str(i + 1)][j]
         ax.plot(time, y, marker[j], markersize = 4, label = species[j], color = color_1[j])
     

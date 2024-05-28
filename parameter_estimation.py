@@ -13,6 +13,7 @@ from scipy.optimize import minimize
 import os
 from ODE_generator import make_system
 from metrics import NLL_mechanism, Akaike
+from matrix_to_reaction_string import format_matrix
 
 
 "##############################################################################"
@@ -31,7 +32,13 @@ def read_files(directory):
                                           encoding = 'latin1').values
     return data
 
-in_silico_data = read_files("exp_data_fruc_HMF")
+place_holder = read_files("exp_data_fruc_HMF")
+
+def reverse_dict(original_dict):
+    reversed_dict = {key: original_dict[key] for key in reversed(original_dict)}
+    return reversed_dict
+
+in_silico_data = reverse_dict(place_holder)
 
 # This takes the first column from each entry of the dictionary and puts it into another dictionary
 initial_conditions = {}
@@ -53,11 +60,11 @@ def sse(kinetic_model, params, num_species):
     for i in range(num_exp):
         aa = initial_conditions["ic_" + str(i+1)]
         ic = np.zeros(num_species)
-        ic[0], ic[1], ic[-1] = aa[0], aa[1], aa[2]
+        ic[0], ic[1], ic[2] = aa[0], aa[1], aa[2]
         observations = in_silico_data["exp_" + str(i + 1)]
         solution = solve_ivp(kinetic_model, t, ic, t_eval = t_eval, method = "RK45",
                              args = params)
-        model_response = np.array([solution.y.T[:, 0], solution.y.T[:, 1], solution.y.T[:, -1]]).T
+        model_response = np.array([solution.y.T[:, 0], solution.y.T[:, 1], solution.y.T[:, 2]]).T
 
         SSE = (observations - model_response)**2
         total[i] = np.sum(SSE)
@@ -87,25 +94,16 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
     
     return opt_val, opt_param
 
-def evaluate(reaction_chain):
+
+def evaluate(reaction_matrix):
     
-    reactions = reaction_chain
+    reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
     # The function executed below is called kinetic_model
     exec(mechanism, globals())
 
-    # Create an empty set to store the unique letters
-    unique_letters = set()
-
-    # Loop through each reaction and add the unique letters to the set
-    for reaction in reactions:
-        for letter in reaction:
-            if letter.isalpha():
-                unique_letters.add(letter)
-
-    num_species = len(unique_letters)
+    number_parameters, num_species = np.shape(reaction_matrix)
     multistart = 2
-    number_parameters = len(reactions)
     lower_bound = 0.0001
     upper_bound = 10
 
@@ -114,26 +112,26 @@ def evaluate(reaction_chain):
     opt_val, opt_param = Opt_Rout(multistart, number_parameters, solution, lower_bound, 
         upper_bound, lambda params, ns: sse(kinetic_model, params, ns), num_species)
 
-    print('MSE = ', opt_val)
-    print('Optimal parameters = ', opt_param)
+    # print('MSE = ', opt_val)
+    # print('Optimal parameters = ', opt_param)
 
     model_predictions = {}
     for i in range(num_exp):
         aa = initial_conditions["ic_" + str(i+1)]
         ic = np.zeros(num_species)
-        ic[0], ic[1], ic[-1] = aa[0], aa[1], aa[2]
+        ic[0], ic[1], ic[2] = aa[0], aa[1], aa[2]
         solution = solve_ivp(kinetic_model, t, ic, t_eval = t_eval, method = "RK45",
                             args = opt_param)
         model_predictions["exp_" + str(i + 1)] = np.array([solution.y.T[:, 0], 
                                                         solution.y.T[:, 1], 
-                                                        solution.y.T[:, -1]]).T
+                                                        solution.y.T[:, 2]]).T
 
     exp_data = np.vstack(list(in_silico_data.values()))
     model_pred = np.vstack(list(model_predictions.values()))
 
     nll = NLL_mechanism(exp_data, model_pred)
     AIC = Akaike(nll, opt_param)
-    print('NLL value: ', nll)
-    print('AIC value: ', AIC)
+    # print('NLL value: ', nll)
+    # print('AIC value: ', AIC)
     
-    return unique_letters, model_predictions, nll, AIC
+    return model_predictions, nll, AIC

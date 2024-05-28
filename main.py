@@ -1,74 +1,83 @@
-from collections import Counter
-from typing import List, Union
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue May 28 11:39:13 2024
+
+@author: md1621
+"""
+
 import numpy as np
 np.random.seed(1998)
-from reaction_generation import get_unique_intermediates, create_reactions, generate_alternative_chains
-from parameter_estimation import evaluate
-from plot_optimal_solution import plot
+import time
+import multiprocessing
+from multiprocessing import Pool, Manager
+from parallel_backtracking import make_matrix, find_empty, sum_pos_neg_excluding_nine, cumulative_sum, is_valid, parallel_solve, solve
+from matrix_to_reaction_string import format_matrix
+from ODE_generator import make_system
+from parameter_estimation import sse, callback, Opt_Rout, evaluate
 
-def bob_the_mechanism_builder(
-        reactant:Union[str,List], 
-        products:Counter
-    ):
 
-    # Find the number of the most repeated product
-    most_repeated = products.most_common(1)[0][1]
-
-    # Start with no intermediates and increase the count on each iteration
+def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget):
+    
     iteration_counter = 0
-    reaction_chains = []
 
     # Initialize flag variables
     last_AIC = 1e99
-    AIC = 1e99
+    min_AIC_value = 1e99
     opt_solution = {}
 
-    # do this loop until current AIC is greater than last iteration's AIC
-    while AIC <= last_AIC:
+    while min_AIC_value <= last_AIC:
         # Keep track of AIC values and last optimal solution for breaking the loop 
-        last_AIC = AIC
+        last_AIC = min_AIC_value
         
-        # Log important info from the last iteration after first iteration
         if iteration_counter > 0:
-            opt_solution["unique_letters"] = unique_letters
-            opt_solution["model_predictions"] = model_predictions
-            opt_solution["reaction_chain"] = reaction_chain
+            elementary_reactions += 1
+            number_species += 1
+            stoichiometry.append(0)
+            model_pred, nll, aic = evaluate(min_AIC_solution)
+            opt_solution["model_predictions"] = model_pred
+            opt_solution["reaction_chain"] = format_matrix(min_AIC_solution)
             opt_solution["nll"] = nll
-            opt_solution["AIC"] = AIC
+            opt_solution["AIC"] = aic
 
-        # Generate intermediates for this iteration
-        intermediates = get_unique_intermediates(most_repeated + iteration_counter, products, reactant)
-
-        # Create reactions with the current set of intermediates
-        base_reaction_chain = create_reactions(reactant, products, intermediates)
-       
-        alternative_chains = generate_alternative_chains(base_reaction_chain, reactant=[reactant], products=products)
-        if len(alternative_chains) > 0:
-            AICs = []
-            alternative_chains.append(base_reaction_chain)
-            print("Alternative chains", alternative_chains)
-            for reaction_chain in alternative_chains:
-                print("#"*100)
-                print("evaluated reaction chain", reaction_chain)
-                alt_unique_letters, alt_model_predictions, alt_nll, alt_AIC = evaluate(reaction_chain)
-                AICs.append(alt_AIC)
+        matrix = make_matrix(elementary_reactions, number_species)
+    
+        start = time.time()
+        find = find_empty(matrix)
+        row, col = find
+    
+        tasks = [(matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i) for i in range(-2, 3)]
+    
+        with Pool(processes=multiprocessing.cpu_count()) as pool:
+            results = pool.starmap(parallel_solve, tasks)
+    
+        solutions = []
+        count = 0
+        for result in results:
+            _solutions, _count = result
+            solutions.extend(_solutions)
+            count += _count
+    
+        all_AIC = []
+        for i, solution in enumerate(solutions):
+            #TODO: if no solutions are found, output the best previous solution
+            model_pred, nll, aic = evaluate(solution)
             
-            min_AIC_idx = AICs.index(min(AICs))  
-            reaction_chain = alternative_chains[min_AIC_idx]
-            unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
-            AIC = min(AICs)
-        else:
-            reaction_chain = create_reactions(reactant, products, intermediates)
-            unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
+            # Store the AIC value, solution, and position in a dictionary
+            all_AIC.append({'aic': aic, 'solution': solution, 'position': i})
+            
+            print(aic)
+            print('----------------------------')
+            
+        # Find the dictionary with the smallest AIC value
+        min_AIC_entry = min(all_AIC, key=lambda x: x['aic'])
+        min_AIC_value = min_AIC_entry['aic']
+        min_AIC_position = min_AIC_entry['position']
+        min_AIC_solution = min_AIC_entry['solution']
         
-        reaction_chains.append(reaction_chain)
-        print("Appended", reaction_chain)
-
-        # unique_letters, model_predictions, nll, AIC = evaluate(reaction_chain)
-
-        # Increase the iteration counter
-        iteration_counter += 1
-
+        iteration_counter += 1 
+        print('ITERATION NUMBER:', iteration_counter)
+    
     # Print important information of the chosen solution
     print("#"*50, "\n")
     print("Solution found!")
@@ -76,16 +85,25 @@ def bob_the_mechanism_builder(
     print(f"Optimal NLL: {opt_solution['nll']}")
     print(f"Optimal AIC: {opt_solution['AIC']}")
 
-    # Plot the result
-    plot(unique_letters=opt_solution['unique_letters'], model_predictions=opt_solution['model_predictions'])
 
-if __name__ == "__main__":
 
-    # Define the reactant and products
-    reactant = 'A'
-    products = Counter(['B', 'B', 'B', 'C'])  # 'B' appears three times and 'C' once
+if __name__ == '__main__':
+    # Example usage:
+    elementary_reactions = 2
+    number_species = 4
+    stoichiometry = [-1, 2, 1, 0]
+    intermediate = 3
+    product = 1
+    reactant = 0
+    time_budget = 1200
+    bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget)
+            
+        
+        
+        
+        
+        
+        
+        
     
-    # Magic is happening here :)
-    print("Mechanism builder is working ...")
-    print("#"*100)
-    bob_the_mechanism_builder(reactant=reactant, products=products)
+
