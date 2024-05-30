@@ -33,21 +33,15 @@ def kinetic_model(x, init, k1, k2, k3, k4):
     return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt
 
 # Plotting the data given
-species = ['A', 'B', 'D', 'E', 'F', 'C']
-# initial_conditions = {
-#     "ic_1": np.array([4, 0, 0, 0, 0, 0]),
-#     "ic_2": np.array([10,          9.61831914, 0, 0, 0,  9.54056527]),
-#     "ic_3": np.array([10, 0, 0, 0, 0, 0])
-#     }
+species = ['A', 'B', 'C', 'D', 'E', 'F']
 
 initial_conditions = {
     "ic_1": np.array([4, 0, 0, 0, 0, 0]),
     "ic_2": np.array([6, 2, 1, 0, 0, 0]),
-    "ic_3": np.array([4, 2, 0, 0, 0, 0])
+    "ic_3": np.array([4, 2, 0, 0, 0, 0]),
+    "ic_4": np.array([6, 0, 0, 0, 0, 0])
     }
 
-# rate_constants = np.array([1.514, 8.259, 8.359, 9.352])
-# rate_constants = np.array([1.514, 5.259, 2.359, 9.352])
 rate_constants = np.array([1.514, 5.259, 9.352, 2.359])
     
 num_exp = len(initial_conditions)
@@ -69,7 +63,7 @@ for i in range(num_exp):
                           args = rate_constants)
     in_silico_data["exp_" + str(i + 1)] = np.clip(solution.y + noise[i], 0, 1e99)
     no_noise_data["exp_" + str(i + 1)] = solution.y
-    ["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[0, 1, 2]]
+    obs_data["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[0, 1, 2]]
 
 
 def dict_to_csv(input_dict, filename):
