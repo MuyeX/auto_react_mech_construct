@@ -40,6 +40,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
             opt_solution["model_predictions"] = model_pred
             opt_solution["opt_param"] = opt_param
             opt_solution["reaction_chain"] = format_matrix(min_AIC_solution)
+            opt_solution["reaction_matrix"] = min_AIC_solution
             opt_solution["nll"] = nll
             opt_solution["AIC"] = aic
 
@@ -102,12 +103,14 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
     
     # Print important information of the chosen solution
-    print("#"*50, "\n")
-    print("Solution found!")
-    print(f"Optimal reaction chain: {opt_solution['reaction_chain']}")
-    print(f"Optimal reaction parameters: {opt_solution['opt_param']}")
-    print(f"Optimal NLL: {opt_solution['nll']}")
-    print(f"Optimal AIC: {opt_solution['AIC']}")
+    # print("#"*50, "\n")
+    # print("Solution found!")
+    # print(f"Optimal reaction chain: {opt_solution['reaction_chain']}")
+    # print(f"Optimal reaction parameters: {opt_solution['opt_param']}")
+    # print(f"Optimal NLL: {opt_solution['nll']}")
+    # print(f"Optimal AIC: {opt_solution['AIC']}")
+    
+    return opt_solution 
 
 
 
@@ -119,8 +122,19 @@ if __name__ == '__main__':
     intermediate = 3
     product = 1
     reactant = 0
-    time_budget = 60 * 60 * 1
-    bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget)
+    time_budget = 10
+    found_mechanism = bob_the_mechanism_builder(elementary_reactions, number_species, \
+                                                stoichiometry, intermediate, product, \
+                                                    reactant, time_budget)
+        
+    print("#"*50, "\n")
+    print("Solution found!")
+    print(f"Optimal reaction matrix: {found_mechanism['reaction_matrix']}")
+    print(f"Optimal reaction chain: {found_mechanism['reaction_chain']}")
+    print(f"Optimal reaction parameters: {found_mechanism['opt_param']}")
+    print(f"Optimal NLL: {found_mechanism['nll']}")
+    print(f"Optimal AIC: {found_mechanism['AIC']}")
+
             
         
         

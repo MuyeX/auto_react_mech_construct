@@ -1,0 +1,87 @@
+Benzoin condensation (7 elementary steps)
+
+https://en.wikipedia.org/wiki/Benzoin_condensation
+
+
+
+
+Acetyl oxidation (5 elementary steps)
+
+https://pubs.rsc.org/en/content/articlepdf/2012/cp/c1cp22765c
+
+
+
+
+
+2005_Senosiain_OH_C2H2 (5 elementary steps)
+
+T,P-dependent k's for the significant pathways on the OH + acetylene surface computed 
+with RQCISD(T)/CBS//UB3LYP/6-311++G(d,p) by: J. P. Senosiain, et al., 
+"The Reaction of Acetylene with Hydroxyl Radicals", J. Phys. Chem. A 2005, 109, 
+6045-6055 PLog rates taken directly from Table 6 of this paper. Rates are for an Argon bath gas
+
+https://rmg.mit.edu/database/kinetics/libraries/2005_Senosiain_OH_C2H2/
+
+
+
+
+
+Butadiene_Dimerization (7 elementary steps)
+
+In conjunction with the Butadiene_Dimerization thermo library, this reaction library 
+contains CBS-QB3 calculations for reactions relevant to Butadiene_Dimerization. 
+Both calculations are done in CBS-QB3 level of theory. Specifics of the calculations 
+performed: 1. CBS-QB3 Level of theory was used after a B3LYP/6-311G(d,p) geometry optimization 
+was performed with frequency scale factor: 0.99 2. Frequency was calculated using B3LYP/CBSB7 iop(7/33=1) 
+(Hessian was calculated) 3. 1D Hindered Rotors were calculated for steps of 10 
+degrees up to the full 360 degree cycle, with geometry optimization on each step, 
+using B3LYP/CBSB7 4. All files generated were fed to Arkane. 5. Bond additivity correction 
+was not used for the rate calculation.
+
+https://rmg.mit.edu/database/kinetics/libraries/Butadiene_Dimerization/
+
+
+
+
+
+Aromatics_high_pressure/C12H11 (3 elementary steps)
+
+Reaction between benzene and phenyl radical Calulated by Max Liu at the CBS-QB3 level of theory
+
+https://rmg.mit.edu/database/kinetics/libraries/C12H11_pdep/
+
+
+
+
+
+2005_Ismail_C6H5_C4H6_highP (7 elementary steps)
+
+Phenyl radical + 1,3-butadiene PES calculated using B3LYP + TST. Taken 
+from: Ismail, H.; Park, J.; Wong, B. M.; Green Jr, W. H.; Lin, M. C., A theoretical 
+and experimental kinetic study of phenyl radical addition to butadiene. Proc. 
+Combust. Inst. 2005, 30, 1049-1056.
+
+https://rmg.mit.edu/database/kinetics/libraries/First_to_Second_Aromatic_Ring/2005_Ismail_C6H5_C4H6_highP/
+
+
+
+
+
+N-S_interactions (6 elementary steps)
+
+This library includes important nitrogen-sulfur interactions Prepared by Alon 
+Grinberg Dana Reference legend: [Marshall2004] A. Goumri, D.D. Shao, P. Marshall, 
+J. Chem. Phys., 2004, 121, 9999, doi: 10.1063/1.1806419 [Marshall2012] K.M. Thompson, 
+Y. Gao, P. Marshall, Int. J. Chem. Kin., 2012, 44(1), 90-99, doi: 10.1002/kin.20612 
+[Palmer1977] H. Freund, H.B. Palmer, Int. J. Chem. Kin., 1977, 9(6), 887-905, 
+doi: 10.1002/kin.550090605 [Pilling2002a] M.A. Blitz, K.W. McKee, M.J. Pilling, 
+J. Phys. Chem. A, 2002, 106(36), 8406-8410, doi: 10.1021/jp025508y [Roth1996b] 
+D. Woiki, P. Roth, Symposium (International) on Combustion, 1996, 26(1), 583-588, 
+doi: 10.1016/S0082-0784(96)80263-3
+
+https://rmg.mit.edu/database/kinetics/libraries/N-S_interactions/
+
+
+
+
+
