@@ -22,11 +22,16 @@ def read_files(directory):
                                           encoding = 'latin1').values
     return data
 
-place_holder = read_files("exp_data_fruc_HMF")
 
 def reverse_dict(original_dict):
     reversed_dict = {key: original_dict[key] for key in reversed(original_dict)}
     return reversed_dict
+
+
+
+name_file = "exp_data_fruc_HMF"
+
+place_holder = read_files(name_file)
 
 in_silico_data = reverse_dict(place_holder)
 

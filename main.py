@@ -81,18 +81,27 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
             # Store the AIC value, solution, and position in a dictionary
             all_AIC.append({'aic': aic, 'solution': solution, 'position': i})
             
-            # print(aic)
-            # print('----------------------------')
             print(i, '/', len(solutions))
             
         if len(solutions) == 0:
             all_AIC.append({'aic': 1e99, 'solution': 1e99, 'position': 1e99})
             
         # Find the dictionary with the smallest AIC value
-        min_AIC_entry = min(all_AIC, key=lambda x: x['aic'])
+        min_aic_value = min(x['aic'] for x in all_AIC)
+
+        # Collect all entries with the minimum AIC value
+        min_AIC_entries = [entry for entry in all_AIC if entry['aic'] == min_aic_value]
+
+        # Choose one entry from the minimum AIC entries to update the loop variables
+        min_AIC_entry = min_AIC_entries[0]
         min_AIC_value = min_AIC_entry['aic']
         min_AIC_position = min_AIC_entry['position']
         min_AIC_solution = min_AIC_entry['solution']
+        
+        # min_AIC_entry = min(all_AIC, key=lambda x: x['aic'])
+        # min_AIC_value = min_AIC_entry['aic']
+        # min_AIC_position = min_AIC_entry['position']
+        # min_AIC_solution = min_AIC_entry['solution']
         
         iteration_counter += 1 
         print('ITERATION NUMBER:', iteration_counter)
@@ -100,17 +109,11 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         print('Current AIC value:', min_AIC_value)
         print('Previous best mechanism:', last_mech)
         print('Previous AIC value:', last_AIC)
-
-    
-    # Print important information of the chosen solution
-    # print("#"*50, "\n")
-    # print("Solution found!")
-    # print(f"Optimal reaction chain: {opt_solution['reaction_chain']}")
-    # print(f"Optimal reaction parameters: {opt_solution['opt_param']}")
-    # print(f"Optimal NLL: {opt_solution['nll']}")
-    # print(f"Optimal AIC: {opt_solution['AIC']}")
-    
-    return opt_solution 
+        
+        if len(min_AIC_entries) > 1:
+            print('All possible solutions:', min_AIC_entries)
+        
+    return opt_solution
 
 
 
@@ -123,9 +126,10 @@ if __name__ == '__main__':
     product = 1
     reactant = 0
     time_budget = 10
-    found_mechanism = bob_the_mechanism_builder(elementary_reactions, number_species, \
-                                                stoichiometry, intermediate, product, \
-                                                    reactant, time_budget)
+    found_mechanism = bob_the_mechanism_builder(elementary_reactions, \
+                                                number_species, stoichiometry, \
+                                                intermediate, product, reactant, \
+                                                time_budget)
         
     print("#"*50, "\n")
     print("Solution found!")
@@ -133,7 +137,7 @@ if __name__ == '__main__':
     print(f"Optimal reaction chain: {found_mechanism['reaction_chain']}")
     print(f"Optimal reaction parameters: {found_mechanism['opt_param']}")
     print(f"Optimal NLL: {found_mechanism['nll']}")
-    print(f"Optimal AIC: {found_mechanism['AIC']}")
+    print(f"Optimal AIC: {found_mechanism['AIC']}")    
 
             
         
