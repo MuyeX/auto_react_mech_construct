@@ -28,8 +28,9 @@ def reverse_dict(original_dict):
     return reversed_dict
 
 
-
 name_file = "exp_data_fruc_HMF"
+# name_file = "exp_data_hypoth"
+# name_file = "exp_data_aldol_condensation"
 
 place_holder = read_files(name_file)
 

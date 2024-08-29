@@ -15,6 +15,14 @@ from parallel_backtracking import make_matrix, find_empty, sum_pos_neg_excluding
 from matrix_to_reaction_string import format_matrix
 from ODE_generator import make_system
 from parameter_estimation import sse, callback, timeout_handler, Opt_Rout, evaluate
+import logging
+
+# Configure logging to write to a file in append mode
+name_file = "output_fruc_to_hmf.log"
+# name_file = "output_hypoth.log"
+# name_file = "output_aldol_condensation.log"
+logging.basicConfig(filename = name_file, level = logging.INFO, \
+                    format = '%(message)s', filemode = 'a')
 
 
 def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget):
@@ -75,13 +83,17 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
             count += _count
     
         all_AIC = []
+                    
         for i, solution in enumerate(solutions):
             model_pred, opt_param, nll, aic = evaluate(solution)
             
             # Store the AIC value, solution, and position in a dictionary
             all_AIC.append({'aic': aic, 'solution': solution, 'position': i})
             
-            print(i, '/', len(solutions))
+            print(i + 1, '/', len(solutions))
+            print(solution)
+            print(aic)
+            print('\n')
             
         if len(solutions) == 0:
             all_AIC.append({'aic': 1e99, 'solution': 1e99, 'position': 1e99})
@@ -105,10 +117,16 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         
         iteration_counter += 1 
         print('ITERATION NUMBER:', iteration_counter)
-        print('Current best mechanism:', min_AIC_solution)
+        print('Current best mechanism: \n', min_AIC_solution)
         print('Current AIC value:', min_AIC_value)
-        print('Previous best mechanism:', last_mech)
+        print('Previous best mechanism: \n', last_mech)
         print('Previous AIC value:', last_AIC)
+        
+        logging.info(f'ITERATION NUMBER: {iteration_counter}')
+        logging.info(f'Current best mechanism: \n {min_AIC_solution}')
+        logging.info(f'Current AIC value: {min_AIC_value}')
+        logging.info(f'Previous best mechanism: \n {last_mech}')
+        logging.info(f'Previous AIC value: {last_AIC}')
         
         if len(min_AIC_entries) > 1:
             print('All possible solutions:', min_AIC_entries)
@@ -125,15 +143,15 @@ if __name__ == '__main__':
     intermediate = 3
     product = 1
     reactant = 0
-    time_budget = 10
+    time_budget = 60 * 0.5
     found_mechanism = bob_the_mechanism_builder(elementary_reactions, \
                                                 number_species, stoichiometry, \
                                                 intermediate, product, reactant, \
                                                 time_budget)
         
-    print("#"*50, "\n")
+    print("\n", "#"*80, "\n")
     print("Solution found!")
-    print(f"Optimal reaction matrix: {found_mechanism['reaction_matrix']}")
+    print(f"Optimal reaction matrix: \n {found_mechanism['reaction_matrix']}")
     print(f"Optimal reaction chain: {found_mechanism['reaction_chain']}")
     print(f"Optimal reaction parameters: {found_mechanism['opt_param']}")
     print(f"Optimal NLL: {found_mechanism['nll']}")

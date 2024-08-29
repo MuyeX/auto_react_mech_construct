@@ -25,13 +25,14 @@ np.random.seed(1998)
 
 def kinetic_model(x, init):
     CA,CB,CC,CD,CE = init
-    k1, k2, k3 = np.array([1.57053886, 3.68886042, 2.07615719])
+    k1, k2, k3 = np.array([1.56885688, 3.70554929, 1.95498632])
     dAdt = - k1*CA
     dBdt = k1*CA + k2*CD + k3*CE
     dCdt = k3*CE
     dDdt = k1*CA - k2*CD
     dEdt = k2*CD - k3*CE
     return dAdt,dBdt,dCdt,dDdt,dEdt
+
 
 def kinetic_model_2(x, init):
     CA,CB,CC,CD,CE,CF = init
@@ -44,6 +45,7 @@ def kinetic_model_2(x, init):
     dFdt = k3*CE - k4*CF
     return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt
 
+
 def MBDoE(ic, time):
     t = [0, np.max(time)]
     t_eval = list(time)
@@ -55,6 +57,7 @@ def MBDoE(ic, time):
     diff_2 = np.array([solution_2.y.T[:, 0], solution_2.y.T[:, 1], solution_2.y.T[:, 2]]).T
     difference = -np.sum((diff_1 - diff_2)**2)
     return difference
+
 
 def Opt_Rout(multistart, number_parameters, lower_bound, upper_bound, to_opt, \
     time):
@@ -93,6 +96,7 @@ time = np.linspace(0, 2, timesteps)
 a, b = Opt_Rout(multistart, number_parameters, lower_bound, upper_bound, to_opt, \
     time)
 
+print('Optimal difference: ', -1 * a)
 print('Optimal experiment: ', b)
 
 

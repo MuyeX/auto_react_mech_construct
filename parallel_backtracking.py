@@ -150,58 +150,58 @@ def generate_initial_matrices(num_rows, num_cols):
         initial_matrices.append(matrix)
     return initial_matrices
 
-num_rows = 3
-num_cols = 5
-initial_matrices = generate_initial_matrices(num_rows, num_cols)
+# num_rows = 3
+# num_cols = 5
+# initial_matrices = generate_initial_matrices(num_rows, num_cols)
 
-if __name__ == '__main__':
-    # Example usage:
-    hi = time.time()
-    elementary_reactions = 3
-    number_species = 5
-    matrix = make_matrix(elementary_reactions, number_species)
-    stoichiometry = [-1, 2, 1, 0, 0]
-    intermediate = 3
-    product = 1
-    reactant = 0
-    time_budget = 60
+# if __name__ == '__main__':
+#     # Example usage:
+#     hi = time.time()
+#     elementary_reactions = 3
+#     number_species = 5
+#     matrix = make_matrix(elementary_reactions, number_species)
+#     stoichiometry = [-1, 2, 1, 0, 0]
+#     intermediate = 3
+#     product = 1
+#     reactant = 0
+#     time_budget = 60
 
-    start = time.time()
-    find = find_empty(matrix)
-    row, col = find
-    num_tasks = range(-2, 3)
+#     start = time.time()
+#     find = find_empty(matrix)
+#     row, col = find
+#     num_tasks = range(-2, 3)
     
-    # tasks = [(matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i) for i in num_tasks]
+#     # tasks = [(matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i) for i in num_tasks]
     
-    tasks = []
-    for matrix in initial_matrices:
-        find = find_empty(matrix)
-        if find:
-            row, col = find
-            num_tasks = range(-2, 3)
-            for i in num_tasks:
-                tasks.append((matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i))
+#     tasks = []
+#     for matrix in initial_matrices:
+#         find = find_empty(matrix)
+#         if find:
+#             row, col = find
+#             num_tasks = range(-2, 3)
+#             for i in num_tasks:
+#                 tasks.append((matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i))
 
 
-    with Pool(processes=len(tasks)) as pool:
-        results = pool.starmap(parallel_solve, tasks)
+#     with Pool(processes=len(tasks)) as pool:
+#         results = pool.starmap(parallel_solve, tasks)
 
-    solutions = []
-    count = 0
-    for result in results:
-        _solutions, _count = result
-        solutions.extend(_solutions)
-        count += _count
+#     solutions = []
+#     count = 0
+#     for result in results:
+#         _solutions, _count = result
+#         solutions.extend(_solutions)
+#         count += _count
 
 
-    # for solution in solutions:
-        # print(solution)
-        # print('----------------------------')
+#     # for solution in solutions:
+#         # print(solution)
+#         # print('----------------------------')
 
-    print('Number of solutions found: ', len(solutions))
-    print('Total number of possible matrices: ', 5**(elementary_reactions * number_species))
-    print('Number of matrices checked: ', count)
-    print('Percentage of space checked: ', (count * 100) / 5**(elementary_reactions * number_species), '%')
-    bye = time.time()
-    print('Time spent: ', bye - hi, 's')
+#     print('Number of solutions found: ', len(solutions))
+#     print('Total number of possible matrices: ', 5**(elementary_reactions * number_species))
+#     print('Number of matrices checked: ', count)
+#     print('Percentage of space checked: ', (count * 100) / 5**(elementary_reactions * number_species), '%')
+#     bye = time.time()
+#     print('Time spent: ', bye - hi, 's')
         

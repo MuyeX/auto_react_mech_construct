@@ -1,3 +1,16 @@
+Aldol condensation (3 elementary steps)
+
+https://en.wikipedia.org/wiki/Aldol_condensation
+
+
+
+Claisen Condensation (5 elementary steps)
+
+https://en.wikipedia.org/wiki/Claisen_condensation
+
+
+
+
 Benzoin condensation (7 elementary steps)
 
 https://en.wikipedia.org/wiki/Benzoin_condensation
@@ -8,6 +21,9 @@ https://en.wikipedia.org/wiki/Benzoin_condensation
 Acetyl oxidation (5 elementary steps)
 
 https://pubs.rsc.org/en/content/articlepdf/2012/cp/c1cp22765c
+
+
+
 
 
 

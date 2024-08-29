@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Nov  3 20:52:14 2023
+Created on Mon Jul  8 11:39:51 2024
 
 @author: md1621
 """
@@ -14,46 +14,45 @@ import matplotlib.cm as cm
 import pandas as pd
 np.random.seed(1998)
 
-r1 = 'A -> B + D'
-r2 = 'D -> B + E'
-r3 = 'E -> F'
-r4 = 'F -> B + C'
+r1 = 'A + A -> B'
+r2 = 'A -> D'
+r3 = 'D -> E'
+r4 = 'A + E -> C'
 reactions = [r1, r2, r3, r4]
 mechanism = make_system(reactions)
 print(mechanism)
 
 def kinetic_model(x, init, k1, k2, k3, k4):
-    CA,CB,CC,CD,CE,CF = init
-    dAdt = - k1*CA
-    dBdt = k1*CA + k2*CD + k4*CF
-    dCdt = k4*CF
-    dDdt = k1*CA - k2*CD
-    dEdt = k2*CD - k3*CE
-    dFdt = k3*CE - k4*CF
-    return dAdt,dBdt,dCdt,dDdt,dEdt,dFdt
+    CA,CB,CC,CD,CE = init
+    dAdt = - k1*CA*CA - k2*CA - k4*CA*CE
+    dBdt = k1*CA*CA
+    dCdt = k4*CA*CE
+    dDdt = k2*CA - k3*CD
+    dEdt = k3*CD - k4*CA*CE
+    return dAdt,dBdt,dCdt,dDdt,dEdt
 
 # Plotting the data given
 num_observable_species = 3
-species = ['A', 'B', 'C', 'D', 'E', 'F']
+species = ['A', 'B', 'C', 'D', 'E']
 
 initial_conditions = {
-    "ic_1": np.array([4, 0, 0, 0, 0, 0]),
-    "ic_2": np.array([6, 2, 1, 0, 0, 0]),
-    "ic_3": np.array([4, 2, 0, 0, 0, 0]),
-    "ic_4": np.array([6, 0, 0, 0, 0, 0]),
-    "ic_5": np.array([6, 2, 0, 0, 0, 0])
+    "ic_1": np.array([10, 0, 2, 0, 0]),
+    "ic_2": np.array([10, 2, 0, 0, 0]),
+    "ic_3": np.array([10, 2, 2, 0, 0]),
+    "ic_4": np.array([5 , 0, 0, 0, 0]),
+    "ic_5": np.array([10, 0, 0, 0, 0])
     }
 
-rate_constants = np.array([1.514, 5.259, 9.352, 2.359])
+rate_constants = np.array([0.1, 0.2, 0.13, 0.25])
     
 num_exp = len(initial_conditions)
 num_species = len(species)
 
 timesteps = 30
-time = np.linspace(0, 2, timesteps)
+time = np.linspace(0, 10, timesteps)
 t = [0, np.max(time)]
 t_eval = list(time)
-STD = 0.2
+STD = 0.15
 noise = [np.random.normal(0, STD, size = (num_species, timesteps)) for i in range(num_exp)]
 in_silico_data = {}
 no_noise_data = {}
@@ -79,7 +78,7 @@ def dict_to_csv(input_dict, filename):
         value.to_csv(csv_filename, index=False)
 
 
-dict_to_csv(obs_data, 'exp_data_fruc_HMF/')
+dict_to_csv(obs_data, 'exp_data_hypoth/')
 
 color_1 = cm.plasma(np.linspace(0, 1, num_observable_species))
 marker = ['o' for i in range(num_observable_species)]
@@ -97,13 +96,13 @@ for i in range(num_exp):
     for j in range(num_observable_species):
         y = in_silico_data["exp_" + str(i + 1)][j]
         ax.plot(time, y, marker[j], markersize = 4, label = species[j], color = color_1[j])
-        # yy = no_noise_data["exp_" + str(i + 1)][j]
-        # ax.plot(time, yy, color = color_1[j])
-
+        # y = no_noise_data["exp_" + str(i + 1)][j]
+        # ax.plot(time, y, label = species[j], color = color_1[j])
+    
     ax.grid(alpha = 0.5)
     ax.legend(loc='upper right', fontsize = 15)
     
-    file_path = 'Fruc_HMF_Experiment_' + str(i + 1) +'.png'
+    file_path = 'Hypoth_Experiment_' + str(i + 1) +'.png'
     plt.savefig(file_path, dpi = 600, bbox_inches = "tight")
 
 plt.show()
