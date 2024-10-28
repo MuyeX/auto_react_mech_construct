@@ -1,0 +1,37 @@
+ITERATION NUMBER: 1
+Current best mechanism: 
+ [[-1 -1  1  1]]
+Current AIC value: 1767.62328934051
+Previous best mechanism: 
+ ['Nothing']
+Previous AIC value: 1e+99
+ITERATION NUMBER: 2
+Current best mechanism: 
+ [[-1  0  0  0  1]
+ [ 0 -1  1  1 -1]]
+Current AIC value: 866.579293505938
+Previous best mechanism: 
+ [[-1 -1  1  1]]
+Previous AIC value: 1767.62328934051
+ITERATION NUMBER: 3
+Current best mechanism: 
+ [[-1  0  0  0  1  0]
+ [ 0 -1  0  0 -1  1]
+ [ 0  0  1  1  0 -1]]
+Current AIC value: -351.16861649885806
+Previous best mechanism: 
+ [[-1  0  0  0  1]
+ [ 0 -1  1  1 -1]]
+Previous AIC value: 866.579293505938
+ITERATION NUMBER: 4
+Current best mechanism: 
+ [[-1  0  0  0  0  0  1]
+ [ 0 -1  0  0  1  1 -1]
+ [ 0  0  0  1 -1  0  0]
+ [ 0  0  1  0  0 -1  0]]
+Current AIC value: -349.21181340546775
+Previous best mechanism: 
+ [[-1  0  0  0  1  0]
+ [ 0 -1  0  0 -1  1]
+ [ 0  0  1  1  0 -1]]
+Previous AIC value: -351.16861649885806
