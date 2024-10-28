@@ -1,51 +1,37 @@
 ITERATION NUMBER: 1
 Current best mechanism: 
- [[-1  1  0  1  0]
- [ 0  1  0 -1  1]
- [ 0  1  1  0 -1]]
-Current AIC value: 120.39225143846647
+ [[-1  1  0  0  1]
+ [ 0  1  0  1 -1]
+ [ 0  1  1 -1  0]]
+Current AIC value: -172.68875186791755
 Previous best mechanism: 
  ['Nothing']
 Previous AIC value: 1e+99
 ITERATION NUMBER: 2
 Current best mechanism: 
  [[-1  1  0  0  0  1]
- [ 0  1  0  1  0 -1]
- [ 0  0  1 -1  1  0]
- [ 0  1  0  0 -1  0]]
-Current AIC value: 126.19029960985716
+ [ 0  1  0  0  1 -1]
+ [ 0  0  0  1 -1  0]
+ [ 0  1  1 -1  0  0]]
+Current AIC value: -189.1133446801618
 Previous best mechanism: 
- [[-1  1  0  1  0]
- [ 0  1  0 -1  1]
- [ 0  1  1  0 -1]]
-Previous AIC value: 120.39225143846647
-Exception in comm_msg for 186eb8184b5311ef9b78e2051eede723
-Traceback (most recent call last):
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 347, in _handle_remote_call
-    self._set_call_return_value(msg_dict, return_value)
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 384, in _set_call_return_value
-    self._send_message('remote_call_reply', content=content, data=data,
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/frontendcomm.py", line 113, in _send_message
-    return super(FrontendComm, self)._send_message(*args, **kwargs)
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 238, in _send_message
-    raise CommError("The comm is not connected.")
-spyder_kernels.comms.commbase.CommError: The comm is not connected.
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/comm/base_comm.py", line 263, in comm_msg
-    comm.handle_msg(msg)
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/frontendcomm.py", line 260, in handle_msg
-    comm._msg_callback(msg)
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 333, in _comm_message
-    self._message_handlers[spyder_msg_type](
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 351, in _handle_remote_call
-    self._set_call_return_value(msg_dict, exc_infos, is_error=True)
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 384, in _set_call_return_value
-    self._send_message('remote_call_reply', content=content, data=data,
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/frontendcomm.py", line 113, in _send_message
-    return super(FrontendComm, self)._send_message(*args, **kwargs)
-  File "/Users/md1621/anaconda3/lib/python3.10/site-packages/spyder_kernels/comms/commbase.py", line 238, in _send_message
-    raise CommError("The comm is not connected.")
-spyder_kernels.comms.commbase.CommError: The comm is not connected.
+ [[-1  1  0  0  1]
+ [ 0  1  0  1 -1]
+ [ 0  1  1 -1  0]]
+Previous AIC value: -172.68875186791755
+ITERATION NUMBER: 3
+Current best mechanism: 
+ [[-1  1  0  0  0  0  1]
+ [ 0  0  0  0  1  1 -1]
+ [ 0  1  0  0  0 -1  0]
+ [ 0  0  0  1 -1  0  0]
+ [ 0  1  1 -1  0  0  0]]
+Current AIC value: -169.02676121401134
+Previous best mechanism: 
+ [[-1  1  0  0  0  1]
+ [ 0  1  0  0  1 -1]
+ [ 0  0  0  1 -1  0]
+ [ 0  1  1 -1  0  0]]
+Previous AIC value: -189.1133446801618
+Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<Kernel.poll_control_queue() running at /Users/md1621/anaconda3/lib/python3.10/site-packages/ipykernel/kernelbase.py:309> wait_for=<Future pending cb=[Task.task_wakeup()]> cb=[_chain_future.<locals>._call_set_state() at /Users/md1621/anaconda3/lib/python3.10/asyncio/futures.py:392]>

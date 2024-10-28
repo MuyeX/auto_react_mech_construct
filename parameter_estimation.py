@@ -23,29 +23,56 @@ from read_data import read_files, reverse_dict
 "############################ Optimise Rate Model #############################"
 "##############################################################################"
 
-name_file = "exp_data_fruc_HMF"
+# name_file = "exp_data_fruc_HMF"
 # name_file = "exp_data_hypoth"
-# name_file = "exp_data_aldol_condensation"
+name_file = "exp_data_aldol_condensation"
 
 place_holder = read_files(name_file)
 
 in_silico_data = reverse_dict(place_holder)
 
 # This takes the first column from each entry of the dictionary and puts it into another dictionary
-initial_conditions = {}
-for key, value in in_silico_data.items():
-    aa = "ic_" + key[-1]
-    initial_conditions[aa] = value[0]
+# initial_conditions = {}
+# for key, value in in_silico_data.items():
+#     aa = "ic_" + key[-1]
+#     initial_conditions[aa] = value[0]
+    
+if name_file == "exp_data_fruc_HMF":
+    initial_conditions = {
+        "ic_1": np.array([4, 0, 0, 0, 0, 0]),
+        "ic_2": np.array([6, 2, 1, 0, 0, 0]),
+        "ic_3": np.array([4, 2, 0, 0, 0, 0]),
+        "ic_4": np.array([6, 0, 0, 0, 0, 0]),
+        "ic_5": np.array([6, 2, 0, 0, 0, 0])
+        }
+
+if name_file == "exp_data_aldol_condensation":
+    initial_conditions = {
+        "ic_1": np.array([5 , 10, 0, 0, 0, 0]),
+        "ic_2": np.array([5 , 5 , 2, 0, 0, 0]),
+        "ic_3": np.array([5 , 10, 0, 2, 0, 0]),
+        "ic_4": np.array([10, 10, 0, 2, 0, 0]),
+        "ic_5": np.array([10, 10, 2, 2, 0, 0])
+        }
+    
+if name_file == "exp_data_hypoth":
+    initial_conditions = {
+        "ic_1": np.array([10, 0, 2, 0, 0]),
+        "ic_2": np.array([10, 2, 0, 0, 0]),
+        "ic_3": np.array([10, 2, 2, 0, 0]),
+        "ic_4": np.array([5 , 0, 0, 0, 0]),
+        "ic_5": np.array([10, 0, 0, 0, 0])
+        }
 
 num_exp = len(initial_conditions)
 timesteps = 30
-time = np.linspace(0, 2, timesteps)
+time = np.linspace(0, 10, timesteps)
 t = [0, np.max(time)]
 t_eval = list(time)
 
 
 def sse(kinetic_model, params, num_species):
-    num_observable_species = 3
+    num_observable_species = 4
     num_exp = len(initial_conditions)
     total = np.zeros((num_exp, 1))
 
@@ -123,7 +150,7 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
 
 def evaluate(reaction_matrix):
     
-    num_observable_species = 3
+    num_observable_species = 4
     reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
     # The function executed below is called kinetic_model
@@ -132,18 +159,15 @@ def evaluate(reaction_matrix):
     number_parameters, num_species = np.shape(reaction_matrix)
     multistart = 2
     lower_bound = 0.0001
-    upper_bound = 10
+    upper_bound = 1
 
     solution = np.array([np.random.uniform(lower_bound, upper_bound) for i in range(number_parameters)])
     # solution = np.array([0.1 for i in range(number_parameters)])
     
-    # aaaa = np.array([[-1, 1, 0, 0, 0, 1],
-    #   [0, 1, 0, 0 , 1 , -1],
-    #   [0, 0, 0, 1 , -1, 0 ],
-    #   [0, 1, 1, -1, 0 , 0 ]])
+    # aaaa = np.array([[-1,  1,  0,  1,  0,  0],[ 0,  1,  0,  -1,  1,  0],[ 0,  0,  0,  0,  -1,  1],[ 0,  1,  1, 0,  0,  -1]])
     
     # if np.array_equal(aaaa, reaction_matrix):
-    #     lower_bound = 0.0001
+    #     lower_bound = 1
     #     upper_bound = 10
     #     solution = np.array([1.514, 5.259, 9.352, 2.359])
     #     print('SUIIIIIIIIIIIIIII')

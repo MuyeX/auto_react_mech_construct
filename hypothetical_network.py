@@ -80,7 +80,7 @@ def dict_to_csv(input_dict, filename):
 
 dict_to_csv(obs_data, 'exp_data_hypoth/')
 
-color_1 = cm.plasma(np.linspace(0, 1, num_observable_species))
+color_1 = ['salmon', 'royalblue', 'darkviolet', 'limegreen']
 marker = ['o' for i in range(num_observable_species)]
 
 # Plotting the in-silico data for visualisation

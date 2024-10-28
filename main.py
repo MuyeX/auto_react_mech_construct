@@ -18,8 +18,8 @@ from parameter_estimation import sse, callback, timeout_handler, Opt_Rout, evalu
 import logging
 
 # Configure logging to write to a file in append mode
-name_file = "output_fruc_to_hmf.log"
-# name_file = "output_hypoth.log"
+# name_file = "output_fruc_to_hmf.log"
+name_file = "output_hypoth.log"
 # name_file = "output_aldol_condensation.log"
 logging.basicConfig(filename = name_file, level = logging.INFO, \
                     format = '%(message)s', filemode = 'a')
@@ -137,13 +137,13 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
 if __name__ == '__main__':
     # Example usage:
-    elementary_reactions = 3
-    number_species = 5
-    stoichiometry = [-1, 3, 1, 0, 0]
+    elementary_reactions = 2
+    number_species = 3
+    stoichiometry = [-4, 1, 1]
     intermediate = 3
     product = 1
     reactant = 0
-    time_budget = 60 * 0.5
+    time_budget = 60 * 60 * 2
     found_mechanism = bob_the_mechanism_builder(elementary_reactions, \
                                                 number_species, stoichiometry, \
                                                 intermediate, product, reactant, \

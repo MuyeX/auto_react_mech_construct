@@ -81,7 +81,7 @@ def dict_to_csv(input_dict, filename):
 
 dict_to_csv(obs_data, 'exp_data_fruc_HMF/')
 
-color_1 = cm.plasma(np.linspace(0, 1, num_observable_species))
+color_1 = ['salmon', 'royalblue', 'darkviolet', 'limegreen']
 marker = ['o' for i in range(num_observable_species)]
 
 # Plotting the in-silico data for visualisation
@@ -101,7 +101,7 @@ for i in range(num_exp):
         # ax.plot(time, yy, color = color_1[j])
 
     ax.grid(alpha = 0.5)
-    ax.legend(loc='upper right', fontsize = 15)
+    ax.legend(loc='center right', fontsize = 15)
     
     file_path = 'Fruc_HMF_Experiment_' + str(i + 1) +'.png'
     plt.savefig(file_path, dpi = 600, bbox_inches = "tight")
