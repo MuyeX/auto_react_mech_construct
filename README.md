@@ -37,10 +37,15 @@ $ pip install -r requirements.txt
 ## Usage
 
 The kinetic data available should be loaded into the directory. This should be added as a single folder, where each file is a different experiment (each experiment should be named as "exp_{number of experiment}.csv").
+
 To record the output from the algorithm, define an output file (e.g., name_file = "output_hypoth.log") in main.py.
+
 In parameter_estimation.py define the name of the folder within the directory that has the kinetic data (e.g., name_file = "exp_data_hypoth").
+
 In parameter_estimation.py ensure that num_observable_species is defined according to the system (line 75 and 153).
+
 At the bottom of main.py, define elementary_reactions (i.e., the number of elementary steps of the smallest possible given the stoichiometry of the reaction), number_species (i.e., the number of species that can be observed, this should be the number of main reactants and products), stoichiometry (i.e., the stoichiometric coefficients of the main reactants and products), intermediate (i.e., this is the position within the vector from where the intermediates will start showing; this number is just the same as the number_species), product (i.e., this is the position within the vector from where the products will start showing), reactant (i.e., this is the position within the vector from where the reactants will start showing; this is always 0), and finally time_budget (i.e., the number of seconds SiMBA will explore a specific layer of complexity).
+
 Once all this is done, run the main.py file.
 
 ## Example Case Studies
