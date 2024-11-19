@@ -19,7 +19,8 @@ import logging
 
 # Configure logging to write to a file in append mode
 # name_file = "output_fruc_to_hmf.log"
-name_file = "output_hypoth.log"
+# name_file = "output_hypoth.log"
+name_file = "testing.log"
 # name_file = "output_aldol_condensation.log"
 logging.basicConfig(filename = name_file, level = logging.INFO, \
                     format = '%(message)s', filemode = 'a')

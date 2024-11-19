@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Simplest Mechanism Builder Algorithm (SiMBA)
 
 Welcome to **SiMBA (Simplest Mechanism Builder Algorithm)**, an automated microkinetic model discovery tool. SiMBA is designed to facilitate the generation of robust, accurate, and computationally efficient microkinetic models from kinetic data, bridging the gap between theoretical exploration and practical applicability in chemical engineering.
@@ -27,3 +28,6 @@ To install SiMBA, clone the repository from GitHub:
 $ git clone https://github.com/OptiMaL-PSE-Lab/auto_react_mech_construct
 $ cd auto_react_mech_construct
 
+=======
+Simplest Mechanism Builder Algorithm (SiMBA): An Automated Microkinetic Model Discovery Tool
+>>>>>>> 469968f54c02f02f926ab9d0be0ff260c81b0eee

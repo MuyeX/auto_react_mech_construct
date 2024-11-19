@@ -24,8 +24,8 @@ from read_data import read_files, reverse_dict
 "##############################################################################"
 
 # name_file = "exp_data_fruc_HMF"
-# name_file = "exp_data_hypoth"
-name_file = "exp_data_aldol_condensation"
+name_file = "exp_data_hypoth"
+# name_file = "exp_data_aldol_condensation"
 
 place_holder = read_files(name_file)
 
@@ -72,7 +72,7 @@ t_eval = list(time)
 
 
 def sse(kinetic_model, params, num_species):
-    num_observable_species = 4
+    num_observable_species = 3
     num_exp = len(initial_conditions)
     total = np.zeros((num_exp, 1))
 
@@ -150,7 +150,7 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
 
 def evaluate(reaction_matrix):
     
-    num_observable_species = 4
+    num_observable_species = 3
     reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
     # The function executed below is called kinetic_model
