@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Simplest Mechanism Builder Algorithm (SiMBA)
 
 Welcome to **SiMBA (Simplest Mechanism Builder Algorithm)**, an automated microkinetic model discovery tool. SiMBA is designed to facilitate the generation of robust, accurate, and computationally efficient microkinetic models from kinetic data, bridging the gap between theoretical exploration and practical applicability in chemical engineering.
@@ -27,7 +26,35 @@ To install SiMBA, clone the repository from GitHub:
 ```sh
 $ git clone https://github.com/OptiMaL-PSE-Lab/auto_react_mech_construct
 $ cd auto_react_mech_construct
+```
 
-=======
-Simplest Mechanism Builder Algorithm (SiMBA): An Automated Microkinetic Model Discovery Tool
->>>>>>> 469968f54c02f02f926ab9d0be0ff260c81b0eee
+Ensure that you have the required Python libraries installed. You can install them via the provided requirements.txt file:
+
+```sh
+$ pip install -r requirements.txt
+```
+
+## Usage
+
+The kinetic data available should be loaded into the directory. This should be added as a single folder, where each file is a different experiment (each experiment should be named as "exp_{number of experiment}.csv").
+To record the output from the algorithm, define an output file (e.g., name_file = "output_hypoth.log") in main.py.
+In parameter_estimation.py define the name of the folder within the directory that has the kinetic data (e.g., name_file = "exp_data_hypoth").
+In parameter_estimation.py ensure that num_observable_species is defined according to the system (line 75 and 153).
+At the bottom of main.py, define elementary_reactions (i.e., the number of elementary steps of the smallest possible given the stoichiometry of the reaction), number_species (i.e., the number of species that can be observed, this should be the number of main reactants and products), stoichiometry (i.e., the stoichiometric coefficients of the main reactants and products), intermediate (i.e., this is the position within the vector from where the intermediates will start showing; this number is just the same as the number_species), product (i.e., this is the position within the vector from where the products will start showing), reactant (i.e., this is the position within the vector from where the reactants will start showing; this is always 0), and finally time_budget (i.e., the number of seconds SiMBA will explore a specific layer of complexity).
+Once all this is done, run the main.py file.
+
+## Example Case Studies
+
+SiMBA has been tested on several case studies, including:
+
+- Hypothetical Reaction: A system involving five species and four elementary steps, demonstrating the algorithm's versatility in handling unknown intermediates, as well as first and second order elementary steps.
+- Aldol Condensation Reaction: The condensation between benzaldehyde and acetophenone, showcasing SiMBA's capability in practical contexts.
+- Dehydration of Fructose: Conversion to 5-hydroxymethylfurfural, illustrating SiMBA's application in complex chemical systems where only half of the species involved in the mechanism are observable.
+
+## Limitations and Future Work
+
+While SiMBA significantly enhances the exploration of microkinetic models, it does not inherently chemically identify intermediates, requiring expert input for complex systems. Future improvements will focus on incorporating chemical identification and uncertainty quantification to make the models even more robust and autonomous.
+
+## Acknowledgments
+
+This work was supported by the Engineering and Physical Sciences Research Council (EPSRC) under grant EP/S023232/1.
