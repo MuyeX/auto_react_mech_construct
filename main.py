@@ -14,14 +14,14 @@ from multiprocessing import Pool, Manager
 from parallel_backtracking import make_matrix, find_empty, sum_pos_neg_excluding_nine, cumulative_sum, is_valid, parallel_solve, solve, generate_initial_matrices
 from matrix_to_reaction_string import format_matrix
 from ODE_generator import make_system
-from parameter_estimation import sse, callback, timeout_handler, Opt_Rout, evaluate
+from parameter_estimation import adjust_ic_length, sse, TimeoutException, timeout_handler, Opt_Rout, evaluate
 import logging
 
 # Configure logging to write to a file in append mode
 # name_file = "output_fruc_to_hmf.log"
 # name_file = "output_hypoth.log"
-name_file = "testing.log"
 # name_file = "output_aldol_condensation.log"
+name_file = "output_fruc_to_hmf2.log"
 logging.basicConfig(filename = name_file, level = logging.INFO, \
                     format = '%(message)s', filemode = 'a')
 
@@ -138,13 +138,13 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
 if __name__ == '__main__':
     # Example usage:
-    elementary_reactions = 2
-    number_species = 3
-    stoichiometry = [-4, 1, 1]
+    elementary_reactions = 3
+    number_species = 5
+    stoichiometry = [-1, 3, 1, 0, 0]
     intermediate = 3
     product = 1
     reactant = 0
-    time_budget = 60 * 60 * 2
+    time_budget = 60
     found_mechanism = bob_the_mechanism_builder(elementary_reactions, \
                                                 number_species, stoichiometry, \
                                                 intermediate, product, reactant, \
@@ -157,14 +157,4 @@ if __name__ == '__main__':
     print(f"Optimal reaction parameters: {found_mechanism['opt_param']}")
     print(f"Optimal NLL: {found_mechanism['nll']}")
     print(f"Optimal AIC: {found_mechanism['AIC']}")    
-
-            
         
-        
-        
-        
-        
-        
-        
-    
-
