@@ -245,17 +245,6 @@ def evaluate(reaction_matrix):
     # solution = np.array([np.random.uniform(lower_bound, upper_bound) for i in range(number_parameters)])
     solution = np.array([1 for i in range(number_parameters)])
     
-    # aaaa = np.array([[-1,  0,  0,  1,  0,  0],[ 0,  1,  0,  -1,  1,  0],[ 0,  1,  0,  0,  -1,  1],[ 0,  1,  1, 0,  0,  -1]])
-    
-    # if np.array_equal(aaaa, reaction_matrix):
-    #     lower_bound = 1
-    #     upper_bound = 10
-    #     solution = np.array([0.10159522, 0.35146577, 1.71775928, 0.04800828])
-    #     print('SUIIIIIIIIIIIIIII')
-
-    # opt_val, opt_param = Opt_Rout(multistart, number_parameters, solution, lower_bound, 
-    #     upper_bound, lambda params, ns: sse(kinetic_model, params, ns), num_species)
-    
     opt_param, opt_val = Opt_Rout(multistart, number_parameters, solution, lower_bound, 
         upper_bound, sse, num_species)
 
