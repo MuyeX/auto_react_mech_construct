@@ -32,9 +32,10 @@ ITERATION NUMBER: 4
 Current best mechanism: 
  [[-2  1  0  0  0  0]
  [-2  0  0  0  0  1]
+ [ 0  0  0  0  2 -1]
  [ 0  0  0  1 -1  0]
  [ 0  0  1 -1 -1  0]]
-Current AIC value: 1584.9772953761121
+Current AIC value: 390.9172953761121
 Previous best mechanism: 
  [[-2  1  0  0  0]
  [-1  0  0  0  1]
