@@ -201,7 +201,7 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
         try:
             # Set up the timeout
             signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(10)  # Set the timeout to 1 second
+            signal.alarm(5)  # Set the timeout to 1 second
 
             # Run optimization
             result = minimize(
