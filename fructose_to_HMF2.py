@@ -69,7 +69,7 @@ initial_conditions = {
     "ic_1": np.array([4, 0, 0]),
     "ic_2": np.array([6, 2, 1]),
     "ic_3": np.array([4, 2, 0]),
-    "ic_4": np.array([6, 0, 0]),
+    "ic_4": np.array([4, 0, 1]),
     "ic_5": np.array([6, 2, 0])
     }
     
