@@ -21,12 +21,12 @@ Previous best mechanism:
 Previous AIC value: -166.18532140393688
 ITERATION NUMBER: 3
 Current best mechanism: 
- [[-1  1  0  1  0  0  0]
- [ 0  0  0 -1  1  1  0]
- [ 0  1  0  0 -1  0  0]
- [ 0  1  0  0  0 -1  1]
- [ 0  1  1  0  0  0 -1]]
-Current AIC value: -153.30999841517098
+ [[-1  1  0  0  0  0  1]
+ [ 0  0  0  0  1  1 -1]
+ [ 0  0  0  0 -1 -1  1]
+ [ 0  1  0  1  0  0 -1]
+ [ 0  1  1 -1  0  0  0]]
+Current AIC value: -161.52183314837407
 Previous best mechanism: 
  [[-1  1  0  0  0  1]
  [ 0  1  0  0  1 -1]
