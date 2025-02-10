@@ -9,11 +9,11 @@ Previous best mechanism:
 Previous AIC value: 1e+99
 ITERATION NUMBER: 2
 Current best mechanism: 
- [[-1  1  0  0  0  1]
+ [[-1  0  0  0  0  1]
  [ 0  1  0  0  1 -1]
- [ 0  0  0  1 -1  0]
+ [ 0  1  0  1 -1  0]
  [ 0  1  1 -1  0  0]]
-Current AIC value: -167.7317497804495
+Current AIC value: -169.3973153276259
 Previous best mechanism: 
  [[-1  1  0  1  0]
  [ 0  1  0 -1  1]
@@ -28,8 +28,8 @@ Current best mechanism:
  [ 0  1  1 -1  0  0  0]]
 Current AIC value: -161.52183314837407
 Previous best mechanism: 
- [[-1  1  0  0  0  1]
+ [[-1  0  0  0  0  1]
  [ 0  1  0  0  1 -1]
- [ 0  0  0  1 -1  0]
+ [ 0  1  0  1 -1  0]
  [ 0  1  1 -1  0  0]]
-Previous AIC value: -167.7317497804495
+Previous AIC value: -169.3973153276259
