@@ -27,8 +27,8 @@ from functools import partial
 
 # name_file = "exp_data_fruc_HMF"
 # name_file = "exp_data_hypoth"
-# name_file = "exp_data_aldol_condensation"
-name_file = "exp_data_fruc_HMF2"
+name_file = "exp_data_aldol_condensation"
+# name_file = "exp_data_fruc_HMF2"
 
 place_holder = read_files(name_file)
 
@@ -79,7 +79,7 @@ if name_file == "exp_data_fruc_HMF2":
 
 num_exp = len(initial_conditions)
 timesteps = 30
-time = np.linspace(0, 90, timesteps)
+time = np.linspace(0, 10, timesteps)
 t = [0, np.max(time)]
 t_eval = list(time)
 
@@ -129,7 +129,7 @@ def sse(kinetic_model, params, num_species):
 
     # Initialize SSE
     sse = 0.0
-    num_observable_species = 3
+    num_observable_species = 4
 
     # Iterate over all experiments
     for i, (exp, ic) in enumerate(initial_conditions.items()):
@@ -231,7 +231,7 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
 
 def evaluate(reaction_matrix):
     
-    num_observable_species = 3
+    num_observable_species = 4
     reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
     # The function executed below is called kinetic_model
