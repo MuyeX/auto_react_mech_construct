@@ -20,8 +20,9 @@ import logging
 # Configure logging to write to a file in append mode
 # name_file = "output_fruc_to_hmf.log"
 # name_file = "output_hypoth.log"
-name_file = "output_aldol_condensation.log"
+# name_file = "output_aldol_condensation.log"
 # name_file = "output_fruc_to_hmf2.log"
+name_file = "aldol_test.log"
 logging.basicConfig(filename = name_file, level = logging.INFO, \
                     format = '%(message)s', filemode = 'a')
 
@@ -106,7 +107,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
         for i, result in enumerate(all_AIC):
             print(i + 1, '/', len(solutions))
-            print(result['solution'])
+            # print(result['solution'])
             print(result['aic'])
             print('\n')
             
@@ -135,16 +136,18 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         
         iteration_counter += 1 
         print('ITERATION NUMBER:', iteration_counter)
-        print('Current best mechanism: \n', min_AIC_solution)
+        # print('Current best mechanism: \n', min_AIC_solution)
         print('Current AIC value:', min_AIC_value)
         print('Previous best mechanism: \n', last_mech)
         print('Previous AIC value:', last_AIC)
-        
-        logging.info(f'ITERATION NUMBER: {iteration_counter}')
+
+        logging.info('\n' + f'ITERATION NUMBER: {iteration_counter}')
+        logging.info("#" * 80 + "\n")
         logging.info(f'Current best mechanism: \n {min_AIC_solution}')
         logging.info(f'Current AIC value: {min_AIC_value}')
         logging.info(f'Previous best mechanism: \n {last_mech}')
         logging.info(f'Previous AIC value: {last_AIC}')
+        logging.info( "#" * 80 + "\n")
         
         if len(min_AIC_entries) > 1:
             print('All possible solutions:', min_AIC_entries)
@@ -161,7 +164,7 @@ if __name__ == '__main__':
     intermediate = 4
     product = 2
     reactant = 0
-    time_budget = 60
+    time_budget = 10
     found_mechanism = bob_the_mechanism_builder(elementary_reactions, \
                                                 number_species, stoichiometry, \
                                                 intermediate, product, reactant, \
@@ -173,5 +176,15 @@ if __name__ == '__main__':
     print(f"Optimal reaction chain: {found_mechanism['reaction_chain']}")
     print(f"Optimal reaction parameters: {found_mechanism['opt_param']}")
     print(f"Optimal NLL: {found_mechanism['nll']}")
-    print(f"Optimal AIC: {found_mechanism['AIC']}")    
+    print(f"Optimal AIC: {found_mechanism['AIC']}")
+
+    logging.info("\n" + "#"*80 + "\n")
+    logging.info("Solution found!")
+    logging.info(f"Optimal reaction matrix: \n {found_mechanism['reaction_matrix']}")
+    logging.info(f"Optimal reaction chain: {found_mechanism['reaction_chain']}")
+    logging.info(f"Optimal reaction parameters: {found_mechanism['opt_param']}")
+    logging.info(f"Optimal NLL: {found_mechanism['nll']}")
+    logging.info(f"Optimal AIC: {found_mechanism['AIC']}")
+    logging.info("\n" + "#"*80 + "\n")
+
         
