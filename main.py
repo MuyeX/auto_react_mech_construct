@@ -26,6 +26,16 @@ logging.basicConfig(filename = name_file, level = logging.INFO, \
                     format = '%(message)s', filemode = 'a')
 
 
+def evaluate_solution_parallel(solution):
+    sol, idx, len_sol = solution
+    model_pred, opt_param, nll, aic = evaluate(sol)
+    print(idx + 1, '/', len_sol)
+    print(sol)
+    print(aic)
+    print('\n')
+    return {'aic': aic, 'solution': sol}
+
+
 def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget):
     
     iteration_counter = 0
@@ -82,22 +92,29 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
             _solutions, _count = result
             solutions.extend(_solutions)
             count += _count
-    
+
+        # solutions, count = solve_dfs(matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget)
+
+        for i in range(len(solutions)):
+            solutions[i] = (solutions[i], i, len(solutions))
+
         all_AIC = []
-                    
-        for i, solution in enumerate(solutions):
-            model_pred, opt_param, nll, aic = evaluate(solution)
-            
-            # Store the AIC value, solution, and position in a dictionary
-            all_AIC.append({'aic': aic, 'solution': solution, 'position': i})
-            
+        # print(solutions)
+        # Parallelize the evaluation of solutions
+        with Pool(processes=multiprocessing.cpu_count()) as pool:
+            all_AIC = pool.map(evaluate_solution_parallel, solutions)
+
+        for i, result in enumerate(all_AIC):
             print(i + 1, '/', len(solutions))
-            print(solution)
-            print(aic)
+            print(result['solution'])
+            print(result['aic'])
             print('\n')
             
         if len(solutions) == 0:
-            all_AIC.append({'aic': 1e99, 'solution': 1e99, 'position': 1e99})
+            all_AIC.append({'aic': 1e99, 'solution': 1e99})
+
+        for i in range(len(all_AIC)):
+            all_AIC[i]['position'] = i
             
         # Find the dictionary with the smallest AIC value
         min_aic_value = min(x['aic'] for x in all_AIC)
