@@ -19,6 +19,7 @@ from read_data import *
 import signal
 from read_data import read_files, reverse_dict
 from functools import partial
+from load_config import load_config_file
 
 
 "##############################################################################"
@@ -27,55 +28,61 @@ from functools import partial
 
 # name_file = "exp_data_fruc_HMF"
 # name_file = "exp_data_hypoth"
-name_file = "exp_data_aldol_condensation"
+# name_file = "exp_data_aldol_condensation"
 # name_file = "exp_data_fruc_HMF2"
 
-place_holder = read_files(name_file)
 
-in_silico_data = reverse_dict(place_holder)
+# name_file = config_data["input_dir"]
+# place_holder = read_files(name_file)
+# in_silico_data = reverse_dict(place_holder)
+
+config_data = {}
+
 
 # This takes the first column from each entry of the dictionary and puts it into another dictionary
 # initial_conditions = {}
 # for key, value in in_silico_data.items():
 #     aa = "ic_" + key[-1]
 #     initial_conditions[aa] = value[0]
-    
-if name_file == "exp_data_fruc_HMF":
-    initial_conditions = {
-        "ic_1": np.array([4, 0, 0, 0, 0, 0]),
-        "ic_2": np.array([6, 2, 1, 0, 0, 0]),
-        "ic_3": np.array([4, 2, 0, 0, 0, 0]),
-        "ic_4": np.array([6, 0, 0, 0, 0, 0]),
-        "ic_5": np.array([6, 2, 0, 0, 0, 0])
-        }
+#
+# if name_file == "exp_data_fruc_HMF":
+#     initial_conditions = {
+#         "ic_1": np.array([4, 0, 0, 0, 0, 0]),
+#         "ic_2": np.array([6, 2, 1, 0, 0, 0]),
+#         "ic_3": np.array([4, 2, 0, 0, 0, 0]),
+#         "ic_4": np.array([6, 0, 0, 0, 0, 0]),
+#         "ic_5": np.array([6, 2, 0, 0, 0, 0])
+#         }
+#
+# if name_file == "exp_data_aldol_condensation":
+#     initial_conditions = {
+#         "ic_1": np.array([5 , 10, 0, 0, 0, 0]),
+#         "ic_2": np.array([5 , 5 , 2, 0, 0, 0]),
+#         "ic_3": np.array([5 , 10, 0, 2, 0, 0]),
+#         "ic_4": np.array([10, 10, 0, 2, 0, 0]),
+#         "ic_5": np.array([10, 10, 2, 2, 0, 0])
+#         }
+#
+# if name_file == "exp_data_hypoth":
+#     initial_conditions = {
+#         "ic_1": np.array([10, 0, 2, 0, 0]),
+#         "ic_2": np.array([10, 2, 0, 0, 0]),
+#         "ic_3": np.array([10, 2, 2, 0, 0]),
+#         "ic_4": np.array([5 , 0, 0, 0, 0]),
+#         "ic_5": np.array([10, 0, 0, 0, 0])
+#         }
+#
+# if name_file == "exp_data_fruc_HMF2":
+#     initial_conditions = {
+#         "ic_1": np.array([4, 0, 0]),
+#         "ic_2": np.array([6, 2, 1]),
+#         "ic_3": np.array([4, 2, 0]),
+#         "ic_4": np.array([4, 0, 1]),
+#         "ic_5": np.array([6, 2, 0])
+#         }
 
-if name_file == "exp_data_aldol_condensation":
-    initial_conditions = {
-        "ic_1": np.array([5 , 10, 0, 0, 0, 0]),
-        "ic_2": np.array([5 , 5 , 2, 0, 0, 0]),
-        "ic_3": np.array([5 , 10, 0, 2, 0, 0]),
-        "ic_4": np.array([10, 10, 0, 2, 0, 0]),
-        "ic_5": np.array([10, 10, 2, 2, 0, 0])
-        }
-    
-if name_file == "exp_data_hypoth":
-    initial_conditions = {
-        "ic_1": np.array([10, 0, 2, 0, 0]),
-        "ic_2": np.array([10, 2, 0, 0, 0]),
-        "ic_3": np.array([10, 2, 2, 0, 0]),
-        "ic_4": np.array([5 , 0, 0, 0, 0]),
-        "ic_5": np.array([10, 0, 0, 0, 0])
-        }
-    
-if name_file == "exp_data_fruc_HMF2":
-    initial_conditions = {
-        "ic_1": np.array([4, 0, 0]),
-        "ic_2": np.array([6, 2, 1]),
-        "ic_3": np.array([4, 2, 0]),
-        "ic_4": np.array([4, 0, 1]),
-        "ic_5": np.array([6, 2, 0])
-        }
-
+# initial_conditions = config_data['initial_conditions']
+initial_conditions = {}
 
 num_exp = len(initial_conditions)
 timesteps = 30
@@ -129,7 +136,7 @@ def sse(kinetic_model, params, num_species):
 
     # Initialize SSE
     sse = 0.0
-    num_observable_species = 4
+    num_observable_species = config_data['num_observable_species']
 
     # Iterate over all experiments
     for i, (exp, ic) in enumerate(initial_conditions.items()):
@@ -228,12 +235,38 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
     return best_params, best_sse
 
 
+def evaluate(reaction_matrix, config_data_tmp):
 
-def evaluate(reaction_matrix):
+    global config_data
+    global name_file
+    global place_holder
+    global in_silico_data
+
+    config_data = config_data_tmp
+    name_file = config_data["input_dir"]
+    place_holder = read_files(name_file)
+    in_silico_data = reverse_dict(place_holder)
+
+    global initial_conditions
+    initial_conditions = config_data['initial_conditions']
+
+    global num_exp
+    global timesteps
+    global time
+    global t
+    global t_eval
+
+    num_exp = len(initial_conditions)
+    timesteps = 30
+    time = np.linspace(0, 10, timesteps)
+    t = [0, np.max(time)]
+    t_eval = list(time)
     
-    num_observable_species = 4
+    num_observable_species = config_data['num_observable_species']
+
     reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
+
     # The function executed below is called kinetic_model
     exec(mechanism, globals())
 
@@ -288,3 +321,7 @@ def evaluate(reaction_matrix):
     # print('AIC value: ', AIC)
     
     return model_predictions, opt_param, nll, AIC
+
+def transfer_config_data(data:dict):
+    global config_data
+    config_data = data

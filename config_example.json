@@ -1,0 +1,19 @@
+{
+    "elementary_reactions": 1,
+    "number_species": 4,
+    "stoichiometry": [-1, -1, 1, 1],
+    "intermediate": 4,
+    "product": 2,
+    "reactant": 0,
+    "time_budget": 10,
+    "log_file": "aldol_test.log",
+    "input_dir": "exp_data_aldol_condensation",
+    "num_observable_species": 4,
+    "initial_conditions": {
+        "ic_1": [5 , 10, 0, 0, 0, 0],
+        "ic_2": [5 , 5 , 2, 0, 0, 0],
+        "ic_3": [5 , 10, 0, 2, 0, 0],
+        "ic_4": [10, 10, 0, 2, 0, 0],
+        "ic_5": [10, 10, 2, 2, 0, 0]
+    }
+}

@@ -14,22 +14,28 @@ from multiprocessing import Pool, Manager
 from parallel_backtracking import make_matrix, find_empty, sum_pos_neg_excluding_nine, cumulative_sum, is_valid, parallel_solve, solve, generate_initial_matrices
 from matrix_to_reaction_string import format_matrix
 from ODE_generator import make_system
-from parameter_estimation import adjust_ic_length, sse, TimeoutException, timeout_handler, Opt_Rout, evaluate
+from parameter_estimation import adjust_ic_length, sse, TimeoutException, timeout_handler, Opt_Rout, evaluate, transfer_config_data
 import logging
+from load_config import load_config_file
 
 # Configure logging to write to a file in append mode
 # name_file = "output_fruc_to_hmf.log"
 # name_file = "output_hypoth.log"
 # name_file = "output_aldol_condensation.log"
 # name_file = "output_fruc_to_hmf2.log"
-name_file = "aldol_test.log"
-logging.basicConfig(filename = name_file, level = logging.INFO, \
-                    format = '%(message)s', filemode = 'a')
+# name_file = "aldol_test.log"
+# log_file = config_data['log_file']
+# logging.basicConfig(filename = log_file, level = logging.INFO,
+#                     format = '%(message)s', filemode = 'a')
 
+config_data = {}
 
 def evaluate_solution_parallel(solution):
-    sol, idx, len_sol = solution
-    model_pred, opt_param, nll, aic = evaluate(sol)
+
+    sol, idx, len_sol, config_data = solution
+
+    transfer_config_data(config_data)
+    model_pred, opt_param, nll, aic = evaluate(sol, config_data)
     print(idx + 1, '/', len_sol)
     print(sol)
     print(aic)
@@ -56,7 +62,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
             elementary_reactions += 1
             number_species += 1
             stoichiometry.append(0)
-            model_pred, opt_param, nll, aic = evaluate(min_AIC_solution)
+            model_pred, opt_param, nll, aic = evaluate(min_AIC_solution, config_data)
             opt_solution["model_predictions"] = model_pred
             opt_solution["opt_param"] = opt_param
             opt_solution["reaction_chain"] = format_matrix(min_AIC_solution)
@@ -97,7 +103,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         # solutions, count = solve_dfs(matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget)
 
         for i in range(len(solutions)):
-            solutions[i] = (solutions[i], i, len(solutions))
+            solutions[i] = (solutions[i], i, len(solutions), config_data)
 
         all_AIC = []
         # print(solutions)
@@ -158,16 +164,33 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
 if __name__ == '__main__':
     # Example usage:
-    elementary_reactions = 1
-    number_species = 4
-    stoichiometry = [-1, -1, 1, 1]
-    intermediate = 4
-    product = 2
-    reactant = 0
-    time_budget = 10
-    found_mechanism = bob_the_mechanism_builder(elementary_reactions, \
-                                                number_species, stoichiometry, \
-                                                intermediate, product, reactant, \
+    # elementary_reactions = 1
+    # number_species = 4
+    # stoichiometry = [-1, -1, 1, 1]
+    # intermediate = 4
+    # product = 2
+    # reactant = 0
+    # time_budget = 10
+
+    config_data = load_config_file("config_example.json")
+    transfer_config_data(config_data)
+    print(config_data)
+
+    log_file = config_data['log_file']
+    logging.basicConfig(filename=log_file, level=logging.INFO,
+                        format='%(message)s', filemode='a')
+
+    elementary_reactions = config_data['elementary_reactions']
+    number_species = config_data['number_species']
+    stoichiometry = config_data['stoichiometry']
+    intermediate = config_data['intermediate']
+    product = config_data['product']
+    reactant = config_data['reactant']
+    time_budget = config_data['time_budget']
+
+    found_mechanism = bob_the_mechanism_builder(elementary_reactions,
+                                                number_species, stoichiometry,
+                                                intermediate, product, reactant,
                                                 time_budget)
         
     print("\n", "#"*80, "\n")
