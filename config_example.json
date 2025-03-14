@@ -7,7 +7,7 @@
     "reactant": 0,
     "time_budget": 10,
     "log_file": "aldol_test.log",
-    "input_dir": "exp_data_aldol_condensation",
+    "input_dir": "exp_data_aldol_condensation_with_time",
     "num_observable_species": 4,
     "initial_conditions": {
         "ic_1": [5 , 10, 0, 0, 0, 0],

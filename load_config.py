@@ -1,23 +1,3 @@
-# read a json file with the following content:
-# elementary_reactions = 1
-# number_species = 4
-# stoichiometry = [-1, -1, 1, 1]
-# intermediate = 4
-# product = 2
-# reactant = 0
-# time_budget = 10
-# name_file = "aldol_test.log"
-# num_observable_species = 4
-# name_file = "exp_data_aldol_condensation"
-# initial_conditions = {
-#     "ic_1": np.array([4, 0, 0, 0, 0, 0]),
-#     "ic_2": np.array([6, 2, 1, 0, 0, 0]),
-#     "ic_3": np.array([4, 2, 0, 0, 0, 0]),
-#     "ic_4": np.array([6, 0, 0, 0, 0, 0]),
-#     "ic_5": np.array([6, 2, 0, 0, 0, 0])
-# }
-
-
 import json
 import numpy as np
 

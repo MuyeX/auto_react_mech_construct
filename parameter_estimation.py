@@ -123,13 +123,14 @@ def sse(kinetic_model, params, num_species):
     - sse (float): The sum of squared errors for the given model and parameters.
     """
 
-    def simulate_experiment(ic, params):
+    def simulate_experiment(ic, params, t_local, t_eval_local):
         """Simulates the ODE system for given initial conditions and parameters."""
+        # todo change t_eval and t
         solution = solve_ivp(
             lambda t, y: kinetic_model(t, y, *params),
-            [time[0], time[-1]],
+            t_local,
             ic,
-            t_eval=time,
+            t_eval=t_eval_local,
             method="RK45"
         )
         return solution.y
@@ -143,8 +144,12 @@ def sse(kinetic_model, params, num_species):
         # Adjust the initial conditions to match the number of species
         adjusted_ic = adjust_ic_length(ic, num_species)
 
+        time_local = time_axes["exp_" + str(i + 1)]
+        t_local = [0, np.max(time_local)]
+        t_eval_local = list(time_local)
+
         # Simulate the ODE system
-        simulated_data = simulate_experiment(adjusted_ic, params)
+        simulated_data = simulate_experiment(adjusted_ic, params, t_local, t_eval_local)
 
         # Only consider the first `num_species` (observable species)
         simulated_observable = simulated_data[:num_observable_species, :]
@@ -241,11 +246,14 @@ def evaluate(reaction_matrix, config_data_tmp):
     global name_file
     global place_holder
     global in_silico_data
+    global time_axes
 
     config_data = config_data_tmp
     name_file = config_data["input_dir"]
-    place_holder = read_files(name_file)
+    place_holder, time_axes = read_files(name_file, with_time=True)
     in_silico_data = reverse_dict(place_holder)
+
+
 
     global initial_conditions
     initial_conditions = config_data['initial_conditions']
@@ -261,7 +269,12 @@ def evaluate(reaction_matrix, config_data_tmp):
     time = np.linspace(0, 10, timesteps)
     t = [0, np.max(time)]
     t_eval = list(time)
-    
+
+    # if time_axes is empty dictionary, set it to t_eval for every key in in_silico_data
+    if not time_axes:
+        time_axes = {key: t_eval for key in in_silico_data.keys()}
+
+
     num_observable_species = config_data['num_observable_species']
 
     reactions = format_matrix(reaction_matrix)
@@ -294,13 +307,17 @@ def evaluate(reaction_matrix, config_data_tmp):
             ic[j] = aa[j]
                 
         # ic[0], ic[1], ic[2], ic[3] = aa[0], aa[1], aa[2], aa[3]
+
+        time_local = time_axes["exp_" + str(i + 1)]
+        t_local = [0, np.max(time_local)]
+        t_eval_local = list(time_local)
         
         try:
             # Set the signal handler and a 1-second alarm
             signal.signal(signal.SIGALRM, timeout_handler)
             signal.alarm(1)  # Set the timeout to x second
-            
-            solution = solve_ivp(kinetic_model, t, ic, t_eval=t_eval, method="RK45", args=opt_param)
+
+            solution = solve_ivp(kinetic_model, t_local, ic, t_eval=t_eval_local, method="RK45", args=opt_param)
 
             # Disable the alarm after successful completion
             signal.alarm(0)
@@ -309,7 +326,7 @@ def evaluate(reaction_matrix, config_data_tmp):
             
         except TimeoutError:
             # print(f"Integration for experiment {i + 1} took longer than 1 second.")
-            model_predictions["exp_" + str(i + 1)] = np.full((len(t_eval), num_species), 1e99)
+            model_predictions["exp_" + str(i + 1)] = np.full((len(t_eval_local), num_species), 1e99)
     
     sorted_data = {ii: in_silico_data[ii] for ii in sorted(in_silico_data.keys(), key=lambda x: int(x.split('_')[1]))}
     exp_data = np.vstack(list(sorted_data.values()))

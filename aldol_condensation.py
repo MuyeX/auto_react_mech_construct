@@ -48,7 +48,7 @@ rate_constants = np.array([0.7593, 0.2928, 0.6813])
 num_exp = len(initial_conditions)
 num_species = len(species)
 
-timesteps = 30
+timesteps = 40
 time = np.linspace(0, 10, timesteps)
 t = [0, np.max(time)]
 t_eval = list(time)
@@ -67,18 +67,24 @@ for i in range(num_exp):
     obs_data["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[i for i in range(num_observable_species)]]
 
 
-def dict_to_csv(input_dict, filename):
+def dict_to_csv(input_dict, filename, with_time=False):
     # For CSV, each key will be saved as a separate file, hence adding the key to the filename.
     for key, value in input_dict.items():
         if isinstance(value, np.ndarray):
             value = value.T
             value = pd.DataFrame(value)
-        
+
+        value: pd.DataFrame
+
+        # if with_time, the first column will be t_eval
+        if with_time:
+            value.insert(loc = 0, column = 'Time', value = np.array(t_eval))
+
         csv_filename = filename + key + '.csv'
         value.to_csv(csv_filename, index=False)
 
-
-dict_to_csv(obs_data, 'exp_data_aldol_condensation/')
+# dict_to_csv(obs_data, 'exp_data_aldol_condensation/')
+dict_to_csv(obs_data, 'exp_data_aldol_condensation_with_time/', with_time=True)
 
 color_1 = ['salmon', 'royalblue', 'darkviolet', 'limegreen']
 marker = ['o' for i in range(num_observable_species)]
