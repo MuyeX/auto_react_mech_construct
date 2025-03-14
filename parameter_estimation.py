@@ -125,7 +125,6 @@ def sse(kinetic_model, params, num_species):
 
     def simulate_experiment(ic, params, t_local, t_eval_local):
         """Simulates the ODE system for given initial conditions and parameters."""
-        # todo change t_eval and t
         solution = solve_ivp(
             lambda t, y: kinetic_model(t, y, *params),
             t_local,
