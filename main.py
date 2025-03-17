@@ -60,18 +60,26 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         # Keep track of AIC values and last optimal solution for breaking the loop 
         last_AIC = min_AIC_value
         last_mech = min_AIC_solution
-        
+
+
         if iteration_counter > 0:
             elementary_reactions += 1
             number_species += 1
             stoichiometry.append(0)
-            model_pred, opt_param, nll, aic = evaluate(min_AIC_solution, config_data)
-            opt_solution["model_predictions"] = model_pred
-            opt_solution["opt_param"] = opt_param
-            opt_solution["reaction_chain"] = format_matrix(min_AIC_solution)
-            opt_solution["reaction_matrix"] = min_AIC_solution
-            opt_solution["nll"] = nll
-            opt_solution["AIC"] = aic
+            # print("flag1")
+            # print(min_AIC_solution)
+            if isinstance(min_AIC_solution, float):
+                last_AIC = 1e99
+                min_AIC_value = 1e99
+                min_AIC_solution = ['Nothing']
+            else:
+                model_pred, opt_param, nll, aic = evaluate(min_AIC_solution, config_data)
+                opt_solution["model_predictions"] = model_pred
+                opt_solution["opt_param"] = opt_param
+                opt_solution["reaction_chain"] = format_matrix(min_AIC_solution)
+                opt_solution["reaction_matrix"] = min_AIC_solution
+                opt_solution["nll"] = nll
+                opt_solution["AIC"] = aic
 
         matrix = make_matrix(elementary_reactions, number_species)
     
@@ -109,8 +117,10 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         for i in range(len(solutions)):
             solutions[i] = (solutions[i], i, len(solutions), config_data)
 
-        all_AIC = []
+        # print("flag2")
         # print(solutions)
+
+        all_AIC = []
         # Parallelize the evaluation of solutions
         with Pool(processes=use_cores) as pool:
             all_AIC = pool.map(evaluate_solution_parallel, solutions)
@@ -122,6 +132,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
             print('\n')
             
         if len(solutions) == 0:
+            print('No solutions found')
             all_AIC.append({'aic': 1e99, 'solution': 1e99})
 
         for i in range(len(all_AIC)):

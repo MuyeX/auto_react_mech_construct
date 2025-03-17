@@ -67,18 +67,24 @@ for i in range(num_exp):
     obs_data["exp_" + str(i + 1)] = in_silico_data["exp_" + str(i + 1)][[j for j in range(num_observable_species)]]
 
 
-def dict_to_csv(input_dict, filename):
+def dict_to_csv(input_dict, filename, with_time=False):
     # For CSV, each key will be saved as a separate file, hence adding the key to the filename.
     for key, value in input_dict.items():
         if isinstance(value, np.ndarray):
             value = value.T
             value = pd.DataFrame(value)
-        
+
+        value: pd.DataFrame
+
+        # if with_time, the first column will be t_eval
+        if with_time:
+            value.insert(loc = 0, column = 'Time', value = np.array(t_eval))
+
         csv_filename = filename + key + '.csv'
         value.to_csv(csv_filename, index=False)
 
 
-dict_to_csv(obs_data, 'exp_data_hypoth/')
+dict_to_csv(obs_data, 'exp_data_hypoth/', with_time=True)
 
 color_1 = ['salmon', 'royalblue', 'darkviolet', 'limegreen']
 marker = ['o' for i in range(num_observable_species)]

@@ -1,0 +1,20 @@
+{
+    "elementary_reactions": 2,
+    "number_species": 3,
+    "stoichiometry": [-4, 1, 1],
+    "intermediate": 3,
+    "product": 1,
+    "reactant": 0,
+    "time_budget": 10,
+    "log_file": "logs/hypothetical_test.log",
+    "input_dir": "exp_data_hypoth",
+    "num_observable_species": 3,
+    "initial_conditions": {
+        "ic_1": [10, 0, 2, 0, 0],
+        "ic_2": [10, 2, 0, 0, 0],
+        "ic_3": [10, 2, 2, 0, 0],
+        "ic_4": [5 , 0, 0, 0, 0],
+        "ic_5": [10, 0, 0, 0, 0]
+    },
+    "use_cores": 10
+}

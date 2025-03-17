@@ -40,6 +40,7 @@ def cumulative_sum(arr):
     return np.array(cum_sum[1:])
 
 def is_valid(matrix, stoichiometry, intermediate, product, reactant):
+
     if not len(matrix[0]) == len(stoichiometry):
         raise AssertionError('Stoichiometry and matrix generated do not match.')
     
