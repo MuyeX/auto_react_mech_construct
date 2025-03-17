@@ -30,6 +30,8 @@ def load_config_file(file_name: str):
     initial_conditions= {key: np.array(value) for key, value in config_data['initial_conditions'].items()}
     config_data['initial_conditions'] = initial_conditions
 
+    use_cores = config_data['use_cores']
+
     # Print the loaded parameters to verify
     print("Elementary Reactions:", elementary_reactions)
     print("Number of Species:", number_species)
@@ -42,5 +44,6 @@ def load_config_file(file_name: str):
     print("Input Directory:", input_dir)
     print("Number of Observable Species:", num_observable_species)
     print("Initial Conditions:", initial_conditions)
+    print("Use Cores:", use_cores)
 
     return config_data

@@ -43,7 +43,7 @@ def evaluate_solution_parallel(solution):
     return {'aic': aic, 'solution': sol}
 
 
-def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget):
+def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometry, intermediate, product, reactant, time_budget, use_cores):
     
     iteration_counter = 0
 
@@ -89,8 +89,9 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
                 for i in num_tasks:
                     tasks.append((matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i))
 
-    
-        with Pool(processes=multiprocessing.cpu_count()) as pool:
+        avail_cores = multiprocessing.cpu_count()
+        logging.info(f"Number of available cores: {avail_cores}, using {use_cores} cores.")
+        with Pool(processes=use_cores) as pool:
             results = pool.starmap(parallel_solve, tasks)
     
         solutions = []
@@ -108,7 +109,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         all_AIC = []
         # print(solutions)
         # Parallelize the evaluation of solutions
-        with Pool(processes=multiprocessing.cpu_count()) as pool:
+        with Pool(processes=use_cores) as pool:
             all_AIC = pool.map(evaluate_solution_parallel, solutions)
 
         for i, result in enumerate(all_AIC):
@@ -177,6 +178,9 @@ if __name__ == '__main__':
     print(config_data)
 
     log_file = config_data['log_file']
+    # add date and time to the log file name
+    log_file = log_file.split(".")[0] + "_" + time.strftime("%Y%m%d-%H%M%S") + ".log"
+
     logging.basicConfig(filename=log_file, level=logging.INFO,
                         format='%(message)s', filemode='a')
 
@@ -187,11 +191,12 @@ if __name__ == '__main__':
     product = config_data['product']
     reactant = config_data['reactant']
     time_budget = config_data['time_budget']
+    use_cores = config_data['use_cores']
 
     found_mechanism = bob_the_mechanism_builder(elementary_reactions,
                                                 number_species, stoichiometry,
                                                 intermediate, product, reactant,
-                                                time_budget)
+                                                time_budget, use_cores)
         
     print("\n", "#"*80, "\n")
     print("Solution found!")
