@@ -7,6 +7,8 @@ Created on Tue May 28 11:39:13 2024
 """
 
 import numpy as np
+from numpy.ma.core import argsort
+
 np.random.seed(1998)
 import time
 import multiprocessing
@@ -17,6 +19,7 @@ from ODE_generator import make_system
 from parameter_estimation import adjust_ic_length, sse, TimeoutException, timeout_handler, Opt_Rout, evaluate, transfer_config_data
 import logging
 from load_config import load_config_file
+import argparse
 
 # Configure logging to write to a file in append mode
 # name_file = "output_fruc_to_hmf.log"
@@ -173,7 +176,14 @@ if __name__ == '__main__':
     # reactant = 0
     # time_budget = 10
 
-    config_data = load_config_file("config_example.json")
+    parser = argparse.ArgumentParser(description='Run SiMBA')
+    parser.add_argument("config_file", help="The configuration file for the model", type=str, default=None, nargs='?')
+    args = parser.parse_args()
+    config_file = args.config_file
+    if config_file is None:
+        config_file = "config_example.json"
+
+    config_data = load_config_file(config_file)
     transfer_config_data(config_data)
     print(config_data)
 
