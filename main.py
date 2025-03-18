@@ -39,8 +39,6 @@ def evaluate_solution_parallel(solution):
 
     transfer_config_data(config_data)
 
-    print("sol", sol)
-
     model_pred, opt_param, nll, aic = evaluate(sol, config_data)
     print(idx + 1, '/', len_sol)
     print(sol)
@@ -104,6 +102,8 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
                     tasks.append((matrix.copy(), stoichiometry, intermediate, product, reactant, time_budget, start, row, col, i))
 
         avail_cores = multiprocessing.cpu_count()
+
+        print("flag1", len(tasks))
         logging.info(f"Number of available cores: {avail_cores}, using {use_cores} cores.")
         with Pool(processes=use_cores) as pool:
             results = pool.starmap(parallel_solve, tasks)
@@ -124,6 +124,8 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
         # print(solutions)
 
         all_AIC = []
+
+        print('flag2', len(solutions))
         # Parallelize the evaluation of solutions
         with Pool(processes=use_cores) as pool:
             all_AIC = pool.map(evaluate_solution_parallel, solutions)
