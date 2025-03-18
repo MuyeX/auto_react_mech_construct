@@ -11,5 +11,12 @@ conda activate simba_env
 
 cd $HOME/auto_react_mech_construct
 
+start=`date +%s`
+
 python main.py
 
+end=`date +%s`
+
+runtime=$((end-start))
+
+echo $runtime
