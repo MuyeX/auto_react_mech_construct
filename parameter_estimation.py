@@ -164,7 +164,7 @@ def sse(kinetic_model, params, num_species):
             # Compute squared errors
             squared_errors = (simulated_observable - observed_data) ** 2
         except Exception as e:
-            print(f"Error in experiment {i + 1}: {e}. {simulated_observable} \n {observed_data}")
+            print(f"Error in experiment {i + 1}: {e}.{time_axes}\n\n{t_eval_local}\n\n{simulated_observable} \n\n {observed_data}")
             raise e
 
         # Accumulate SSE
