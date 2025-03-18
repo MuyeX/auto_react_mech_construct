@@ -144,6 +144,7 @@ def sse(kinetic_model, params, num_species):
         adjusted_ic = adjust_ic_length(ic, num_species)
 
         time_local = time_axes["exp_" + str(i + 1)]
+        print(len(time_local))
         t_local = [0, np.max(time_local)]
         t_eval_local = list(time_local)
 
