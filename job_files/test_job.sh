@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l select=1:ncpus=10:mem=4gb
+#PBS -l select=1:ncpus=32:mem=4gb
 #PBS -l walltime=00:20:00
 #PBS -N simba_test
 
