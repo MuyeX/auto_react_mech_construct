@@ -160,9 +160,6 @@ def sse(kinetic_model, params, num_species):
         if observed_data.shape != simulated_observable.shape:
             observed_data = observed_data.T
 
-        print(simulated_data.shape, simulated_observable)
-        print(observed_data.shape, observed_data)
-
         # Compute squared errors
         squared_errors = (simulated_observable - observed_data) ** 2
 

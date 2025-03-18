@@ -38,6 +38,9 @@ def evaluate_solution_parallel(solution):
     sol, idx, len_sol, config_data = solution
 
     transfer_config_data(config_data)
+
+    print("sol", sol)
+
     model_pred, opt_param, nll, aic = evaluate(sol, config_data)
     print(idx + 1, '/', len_sol)
     print(sol)
