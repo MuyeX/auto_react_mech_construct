@@ -1,0 +1,76 @@
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 1
+################################################################################
+
+Current best mechanism: 
+ [[-1 -1  1  1]]
+Current AIC value: 2302.094240504017
+Previous best mechanism: 
+ ['Nothing']
+Previous AIC value: 1e+99
+################################################################################
+
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 2
+################################################################################
+
+Current best mechanism: 
+ [[-1  0  0  0  1]
+ [ 0 -1  1  1 -1]]
+Current AIC value: 1109.4826150713916
+Previous best mechanism: 
+ [[-1 -1  1  1]]
+Previous AIC value: 2302.094240504017
+################################################################################
+
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 3
+################################################################################
+
+Current best mechanism: 
+ [[-1  0  0  0  1  0]
+ [ 0 -1  0  0 -1  1]
+ [ 0  0  1  1  0 -1]]
+Current AIC value: -752.2536556734117
+Previous best mechanism: 
+ [[-1  0  0  0  1]
+ [ 0 -1  1  1 -1]]
+Previous AIC value: 1109.4826150713916
+################################################################################
+
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 4
+################################################################################
+
+Current best mechanism: 
+ [[-1  2  0  0  0  0  0]
+ [ 0 -2  0  0  0  1  0]
+ [ 0 -1  0  0  1 -1  1]
+ [ 0  0  1  1 -1  0 -1]]
+Current AIC value: 1504.6416308827506
+Previous best mechanism: 
+ [[-1  0  0  0  1  0]
+ [ 0 -1  0  0 -1  1]
+ [ 0  0  1  1  0 -1]]
+Previous AIC value: -752.2536556734117
+################################################################################
+
+
+################################################################################
+
+Solution found!
+Optimal reaction matrix: 
+ [[-1  0  0  0  1  0]
+ [ 0 -1  0  0 -1  1]
+ [ 0  0  1  1  0 -1]]
+Optimal reaction chain: ['A -> E', 'B + E -> F', 'F -> C + D']
+Optimal reaction parameters: [0.76818075 0.2928345  0.679675  ]
+Optimal NLL: -379.1268193180503
+Optimal AIC: -752.2536386361006
+
+################################################################################
+

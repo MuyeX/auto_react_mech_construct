@@ -1,0 +1,63 @@
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 1
+################################################################################
+
+Current best mechanism: 
+ [[-2  0  1]
+ [-2  1  0]]
+Current AIC value: 1110.3411682892431
+Previous best mechanism: 
+ ['Nothing']
+Previous AIC value: 1e+99
+################################################################################
+
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 2
+################################################################################
+
+Current best mechanism: 
+ [[-2  1  0  0]
+ [-1  0  0  1]
+ [-1  0  1 -1]]
+Current AIC value: -376.9842366311415
+Previous best mechanism: 
+ [[-2  0  1]
+ [-2  1  0]]
+Previous AIC value: 1110.3411682892431
+################################################################################
+
+Number of available cores: 10, using 10 cores.
+
+ITERATION NUMBER: 3
+################################################################################
+
+Current best mechanism: 
+ [[-2  2  0  0  0]
+ [-2  0  0  1  0]
+ [ 0  0  0 -1  1]
+ [ 0 -1  1  0 -1]]
+Current AIC value: 38.45747296756963
+Previous best mechanism: 
+ [[-2  1  0  0]
+ [-1  0  0  1]
+ [-1  0  1 -1]]
+Previous AIC value: -376.9842366311415
+################################################################################
+
+
+################################################################################
+
+Solution found!
+Optimal reaction matrix: 
+ [[-2  1  0  0]
+ [-1  0  0  1]
+ [-1  0  1 -1]]
+Optimal reaction chain: ['A + A -> B', 'A -> D', 'A + D -> C']
+Optimal reaction parameters: [0.10081975 0.19488471 0.03060795]
+Optimal NLL: -191.49211820619985
+Optimal AIC: -376.9842364123997
+
+################################################################################
+

@@ -67,13 +67,13 @@ def is_valid(matrix, stoichiometry, intermediate, product, reactant):
     for i in range(reactant, product):
         array = matrix[:, i]
         if np.any(array == 1) == True or np.any(array == 2) == True:
-            return False   
+            return False
     
     # Rule: products cannot be reacted during any elementary step
     for i in range(product, intermediate):
         array = matrix[:, i]
         if np.any(array == -1) == True or np.any(array == -2) == True:
-            return False    
+            return False
     
     # Rule: intermediates must first be produced before they are consumed
     for i in range(intermediate, np.shape(matrix)[1]):
