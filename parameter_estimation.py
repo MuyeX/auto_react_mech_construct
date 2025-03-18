@@ -110,7 +110,7 @@ def adjust_ic_length(ic, num_species):
         return np.pad(ic, (0, num_species - len(ic)), 'constant')
     return ic
 
-def sse(kinetic_model, params, num_species):
+def sse(kinetic_model, params, num_species, time_axes_local):
     """
     Calculates the sum of squared errors (SSE) for fitting an ODE system to experimental data.
 
@@ -143,29 +143,41 @@ def sse(kinetic_model, params, num_species):
         # Adjust the initial conditions to match the number of species
         adjusted_ic = adjust_ic_length(ic, num_species)
 
-        time_local = time_axes["exp_" + str(i + 1)]
+        time_local = time_axes_local["exp_" + str(i + 1)]
         t_local = [0, np.max(time_local)]
         t_eval_local = list(time_local)
 
+        # Get observed data for the current experiment
+        observed_data = in_silico_data[f"exp_{i+1}"]
+
         # Simulate the ODE system
-        print(t_eval_local)
         simulated_data = simulate_experiment(adjusted_ic, params, t_local, t_eval_local)
 
         # Only consider the first `num_species` (observable species)
         simulated_observable = simulated_data[:num_observable_species, :]
 
-        # Get observed data for the current experiment
-        observed_data = in_silico_data[f"exp_{i+1}"]
-        
         # Transpose observed data if necessary to match shapes
         if observed_data.shape != simulated_observable.shape:
             observed_data = observed_data.T
+
+        while observed_data.shape != simulated_observable.shape:
+            print("Flag3")
+            # Simulate the ODE system
+            simulated_data = simulate_experiment(adjusted_ic, params, t_local, t_eval_local)
+
+            # Only consider the first `num_species` (observable species)
+            simulated_observable = simulated_data[:num_observable_species, :]
+
+            # Transpose observed data if necessary to match shapes
+            if observed_data.shape != simulated_observable.shape:
+                observed_data = observed_data.T
 
         try:
             # Compute squared errors
             squared_errors = (simulated_observable - observed_data) ** 2
         except Exception as e:
             print(f"Error in experiment {i + 1}: {e}.{time_axes}\n\n{t_eval_local}\n\n{simulated_observable} \n\n {observed_data}")
+
             raise e
 
         # Accumulate SSE
@@ -183,7 +195,7 @@ def timeout_handler(signum, frame):
     raise TimeoutException()
 
 
-def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt, num_species):
+def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt, num_species, time_axes_local):
     """
     Estimates the parameters of a given kinetic_model using optimization.
 
@@ -208,7 +220,7 @@ def Opt_Rout(multistart, number_parameters, x0, lower_bound, upper_bound, to_opt
 
     # Partially apply to_opt with fixed kinetic_model and num_species arguments
     def partial_to_opt(params):
-        return to_opt(kinetic_model, params, num_species)
+        return to_opt(kinetic_model, params, num_species, time_axes_local)
 
     for _ in range(multistart):
         # Generate random initial guess within bounds
@@ -255,6 +267,7 @@ def evaluate(reaction_matrix, config_data_tmp):
     config_data = config_data_tmp
     name_file = config_data["input_dir"]
     place_holder, time_axes = read_files(name_file, with_time=True)
+    time_axes_local = time_axes.copy()
     in_silico_data = reverse_dict(place_holder)
 
 
@@ -277,6 +290,7 @@ def evaluate(reaction_matrix, config_data_tmp):
     # if time_axes is empty dictionary, set it to t_eval for every key in in_silico_data
     if not time_axes:
         time_axes = {key: t_eval for key in in_silico_data.keys()}
+        time_axes_local = time_axes.copy()
 
 
     num_observable_species = config_data['num_observable_species']
@@ -296,7 +310,7 @@ def evaluate(reaction_matrix, config_data_tmp):
     solution = np.array([1 for i in range(number_parameters)])
     
     opt_param, opt_val = Opt_Rout(multistart, number_parameters, solution, lower_bound, 
-        upper_bound, sse, num_species)
+        upper_bound, sse, num_species, time_axes_local)
 
 
     # print('MSE = ', opt_val)
