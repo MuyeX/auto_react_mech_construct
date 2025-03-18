@@ -105,7 +105,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
         print("flag1", len(tasks))
         logging.info(f"Number of available cores: {avail_cores}, using {use_cores} cores.")
-        with Pool(processes=min(use_cores, len(tasks))) as pool:
+        with Pool(processes=len(tasks)) as pool:
             results = pool.starmap(parallel_solve, tasks)
     
         solutions = []
@@ -127,7 +127,7 @@ def bob_the_mechanism_builder(elementary_reactions, number_species, stoichiometr
 
         print('flag2', len(solutions))
         # Parallelize the evaluation of solutions
-        with Pool(processes=min(use_cores, len(solutions))) as pool:
+        with Pool(processes=use_cores) as pool:
             all_AIC = pool.map(evaluate_solution_parallel, solutions)
 
         for i, result in enumerate(all_AIC):
