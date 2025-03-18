@@ -148,6 +148,7 @@ def sse(kinetic_model, params, num_species):
         t_eval_local = list(time_local)
 
         # Simulate the ODE system
+        print(t_eval_local)
         simulated_data = simulate_experiment(adjusted_ic, params, t_local, t_eval_local)
 
         # Only consider the first `num_species` (observable species)
