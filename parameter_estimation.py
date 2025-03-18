@@ -144,7 +144,6 @@ def sse(kinetic_model, params, num_species):
         adjusted_ic = adjust_ic_length(ic, num_species)
 
         time_local = time_axes["exp_" + str(i + 1)]
-        print(len(time_local))
         t_local = [0, np.max(time_local)]
         t_eval_local = list(time_local)
 
@@ -161,8 +160,12 @@ def sse(kinetic_model, params, num_species):
         if observed_data.shape != simulated_observable.shape:
             observed_data = observed_data.T
 
-        # Compute squared errors
-        squared_errors = (simulated_observable - observed_data) ** 2
+        try:
+            # Compute squared errors
+            squared_errors = (simulated_observable - observed_data) ** 2
+        except Exception as e:
+            print(f"Error in experiment {i + 1}: {e}. {simulated_observable} \n {observed_data}")
+            raise e
 
         # Accumulate SSE
         sse += np.sum(squared_errors)
