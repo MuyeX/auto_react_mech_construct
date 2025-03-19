@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l select=1:ncpus=32:mem=16gb
+#PBS -l select=1:ncpus=10:mem=16gb
 #PBS -l walltime=00:20:00
 #PBS -N simba_test
 
@@ -13,7 +13,7 @@ cd $HOME/auto_react_mech_construct
 
 start=`date +%s`
 
-python main.py
+python main.py config_hypo.json
 
 end=`date +%s`
 runtime=$((end-start))

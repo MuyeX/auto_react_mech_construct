@@ -13,7 +13,7 @@ cd $HOME/auto_react_mech_construct
 
 start=`date +%s`
 
-python main.py
+python main.py config_hypo.json
 
 end=`date +%s`
 runtime=$((end-start))
