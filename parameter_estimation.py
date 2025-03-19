@@ -125,6 +125,7 @@ def sse(kinetic_model, params, num_species, time_axes_local):
 
     def simulate_experiment(ic, params, t_local, t_eval_local):
         """Simulates the ODE system for given initial conditions and parameters."""
+        # print(t_local, ic)
         solution = solve_ivp(
             lambda t, y: kinetic_model(t, y, *params),
             t_local,
@@ -297,6 +298,8 @@ def evaluate(reaction_matrix, config_data_tmp):
 
     reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
+    print(reaction_matrix)
+    print(reactions)
 
     # The function executed below is called kinetic_model
     exec(mechanism, globals())

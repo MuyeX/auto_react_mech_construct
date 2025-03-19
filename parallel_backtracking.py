@@ -39,7 +39,90 @@ def cumulative_sum(arr):
 
     return np.array(cum_sum[1:])
 
-def is_valid(matrix, stoichiometry, intermediate, product, reactant):
+
+def is_valid(matrix, stoichiometry, intermediate, product, reactant): # adapted for snar reaction
+    if not len(matrix[0]) == len(stoichiometry):
+        raise AssertionError('Stoichiometry and matrix generated do not match.')
+
+    # Rule: each elementary step must react at most 2 molecules and produce at most 3 molecules
+    for i in range(len(matrix)):
+        sum_negative, sum_positive = sum_pos_neg_excluding_nine(matrix[i])
+        if sum_negative < -2 or sum_positive > 3:
+            return False
+
+    # Rule: each elementary step must react at least 1 molecule and produce at least 1 molecule
+    if not any(9 in row for row in matrix):
+        for i in range(len(matrix)):
+            sum_negative, sum_positive = sum_pos_neg_excluding_nine(matrix[i])
+            if sum_negative == 0 or sum_positive == 0:
+                return False
+
+    # # Rule: if reaction matrix is complete, check it against the stoichiometry
+    # if not any(9 in row for row in matrix):
+    #     matrix_stoich = np.sum(matrix, axis=0)
+    #     if np.all(matrix_stoich == stoichiometry) == False:
+    #         return False
+
+    # # Rule: reactants cannot be produced during any elementary step
+    # for i in range(reactant, product):
+    #     array = matrix[:, i]
+    #     if np.any(array == 1) == True or np.any(array == 2) == True:
+    #         return False
+
+    # # Rule: products cannot be reacted during any elementary step
+    # for i in range(product, intermediate):
+    #     array = matrix[:, i]
+    #     if np.any(array == -1) == True or np.any(array == -2) == True:
+    #         return False
+
+    # # Rule: intermediates must first be produced before they are consumed
+    # for i in range(intermediate, np.shape(matrix)[1]):
+    #     array = matrix[:, i]
+    #     cumulative = cumulative_sum(array)
+    #     if np.all(cumulative >= 0) == False or np.all(cumulative == 0) == True:
+    #         return False
+
+    # Rule: intermediates must be produced if they are consumed
+    if not any(9 in row for row in matrix):
+        for i in range(intermediate, np.shape(matrix)[1]):
+            array = matrix[:, i]
+            if np.any(array < 0) != np.any(array > 0):
+                return False
+
+
+    # Rule: products must first be produced before they are consumed
+    # This rule is unnecessary if we have a rule where products can only be
+    # products and can never be reactants
+    for i in range(product, intermediate):
+        array = matrix[:, i]
+        cumulative = cumulative_sum(array)
+        if np.all(cumulative >= 0) == False:
+            return False
+
+    # # Rule: can never have a situation where more molecules of reactant has been reacted
+    # # than the amount of molecules initially input into the system
+    # # This rule is unnecessary if we have a rule where reactants can only be
+    # # reactants and can never be products
+    # for i in range(reactant, product):
+    #     array = matrix[:, i]
+    #     cumulative = cumulative_sum(array)
+    #     if np.all(cumulative >= stoichiometry[i]) == False:
+    #         return False
+
+    # Rule: reactants must be consumed and products must be produced
+    if not any(9 in row for row in matrix):
+        for i in range(reactant, product):
+            array = matrix[:, i]
+            if not np.any(array < 0):
+                return False
+        for i in range(product, intermediate):
+            array = matrix[:, i]
+            if not np.any(array > 0):
+                return False
+
+    return True
+
+def is_valid_old(matrix, stoichiometry, intermediate, product, reactant):
 
     if not len(matrix[0]) == len(stoichiometry):
         raise AssertionError('Stoichiometry and matrix generated do not match.')
