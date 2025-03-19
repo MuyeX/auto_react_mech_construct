@@ -9,7 +9,7 @@ module load miniforge/3
 eval "$(~/miniforge3/bin/conda shell.bash hook)"
 conda activate simba_env
 
-cp -r $HOME/auto_react_mech_construct/ $TMPDIR/auto_react_mech_construct
+cp -r $HOME/auto_react_mech_construct $TMPDIR/
 
 cd $TMPDIR/auto_react_mech_construct
 
@@ -22,4 +22,4 @@ runtime=$((end-start))
 echo $runtime
 
 # Copy the results back to the home directory
-cp -r -u $TMPDIR/auto_react_mech_construct $HOME/auto_react_mech_construct
+cp -r -u $TMPDIR/auto_react_mech_construct $HOME/
