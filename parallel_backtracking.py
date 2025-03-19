@@ -214,7 +214,7 @@ def solve(matrix, stoichiometry, intermediate, product, reactant, time_budget, s
         end = time.time()
         
         if end - start > time_budget:
-            print(f'Time budget reached! {solutions}')
+            print(f'Time budget reached!')
             return solutions, count[0]
         
         if is_valid(matrix, stoichiometry, intermediate, product, reactant):

@@ -5,7 +5,7 @@
     "intermediate": 4,
     "product": 2,
     "reactant": 0,
-    "time_budget": 100,
+    "time_budget": 10000,
     "log_file": "logs/aldol_test.log",
     "input_dir": "exp_data_aldol_condensation_with_time",
     "num_observable_species": 4,
