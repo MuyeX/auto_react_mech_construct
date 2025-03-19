@@ -22,4 +22,4 @@ runtime=$((end-start))
 echo $runtime
 
 # Copy the results back to the home directory
-cp -r -u $TMPDIR/auto_react_mech_construct $HOME/
+cp -r -u $TMPDIR/auto_react_mech_construct/logs $HOME/auto_react_mech_construct/

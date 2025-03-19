@@ -298,8 +298,8 @@ def evaluate(reaction_matrix, config_data_tmp):
 
     reactions = format_matrix(reaction_matrix)
     mechanism = make_system(reactions)
-    print(reaction_matrix)
-    print(reactions)
+    # print(reaction_matrix)
+    # print(reactions)
 
     # The function executed below is called kinetic_model
     exec(mechanism, globals())

@@ -39,11 +39,17 @@ def evaluate_solution_parallel(solution):
 
     transfer_config_data(config_data)
 
-    model_pred, opt_param, nll, aic = evaluate(sol, config_data)
-    print(idx + 1, '/', len_sol)
-    print(sol)
-    print(aic)
-    print('\n')
+    try:
+        model_pred, opt_param, nll, aic = evaluate(sol, config_data)
+        print(idx + 1, '/', len_sol)
+        print(sol)
+        print(aic)
+        print('\n')
+    except ValueError:
+        print(f"Failed to evaluate solution {idx + 1}/{len_sol} due to ValueError.")
+        print(sol)
+        aic = 1e99
+
     return {'aic': aic, 'solution': sol}
 
 
