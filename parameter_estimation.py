@@ -162,7 +162,7 @@ def sse(kinetic_model, params, num_species, time_axes_local):
             observed_data = observed_data.T
 
         while observed_data.shape != simulated_observable.shape:
-            print("Flag3")
+            # print("Flag3")
             # Simulate the ODE system
             simulated_data = simulate_experiment(adjusted_ic, params, t_local, t_eval_local)
 

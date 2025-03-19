@@ -49,6 +49,14 @@ def evaluate_solution_parallel(solution):
         print(f"Failed to evaluate solution {idx + 1}/{len_sol} due to ValueError.")
         print(sol)
         aic = 1e99
+    except TimeoutException:
+        print(f"Timeout occurred for solution {idx + 1}/{len_sol}.")
+        print(sol)
+        aic = 1e99
+    except Exception as e:
+        print(f"An unexpected error occurred for solution {idx + 1}/{len_sol}: {e}")
+        print(sol)
+        aic = 1e99
 
     return {'aic': aic, 'solution': sol}
 

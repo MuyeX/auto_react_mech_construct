@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l select=1:ncpus=64:mem=32gb
+#PBS -l select=1:ncpus=128:mem=64gb
 #PBS -l walltime=02:00:00
 #PBS -N simba_test_change_prune
 
@@ -22,4 +22,4 @@ runtime=$((end-start))
 echo $runtime
 
 # Copy the results back to the home directory
-cp -r -u $TMPDIR/auto_react_mech_construct/logs $HOME/auto_react_mech_construct/
+cp -r -u $TMPDIR/auto_react_mech_construct $HOME/
