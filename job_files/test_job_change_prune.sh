@@ -1,6 +1,6 @@
 #!/bin/bash
 #PBS -l select=1:ncpus=64:mem=32gb
-#PBS -l walltime=00:20:00
+#PBS -l walltime=02:00:00
 #PBS -N simba_test_change_prune
 
 module purge
