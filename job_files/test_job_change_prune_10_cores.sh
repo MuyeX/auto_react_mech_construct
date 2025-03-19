@@ -1,0 +1,25 @@
+#!/bin/bash
+#PBS -l select=1:ncpus=10:mem=64gb
+#PBS -l walltime=07:00:00
+#PBS -N 10_simba_test_change_prune
+
+module purge
+module load miniforge/3
+
+eval "$(~/miniforge3/bin/conda shell.bash hook)"
+conda activate simba_env
+
+cp -r $HOME/auto_react_mech_construct $TMPDIR/
+
+cd $TMPDIR/auto_react_mech_construct
+
+start=`date +%s`
+
+python main.py config_example_10_cores.json
+
+end=`date +%s`
+runtime=$((end-start))
+echo $runtime
+
+# Copy the results back to the home directory
+cp -r -u $TMPDIR/auto_react_mech_construct/logs $HOME/auto_react_mech_construct/
